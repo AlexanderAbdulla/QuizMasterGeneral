@@ -1,12 +1,32 @@
 <html>
-<head></head>
+<head>
+    <script src = "View.js"></script>
+    <script src =Model.js></script>
+    <script src="Controller.js"></script>
+</head>
 <body>
     <h1>Quiz Creator</h1>
     <div id="quizDiv">
-        <div id="Question1">
-            <input type="radio" value="Question1">
-            <input type = "html" id="Question1Title"/>
-        </div>
+        <form id="1">
+            Question 1
+            <br>
+            <textarea id="Question1Text">Your question goes here</textarea>
+            <br>
+            <input type="radio" name="answers" value="Question1Answer1">
+            <input type = "html" id="Question1Answer1"/>
+            <br>
+            <input type="radio" name="answers" value="Question1Answer2">
+            <input type = "html" id="Question2Answer2"/>
+            <br>
+            <input type="radio" name="answers" value="Question1Answer3">
+            <input type = "html" id="Question1Answer3"/>
+            <br>
+            <input type="radio" name="answers" value="Question1Answer4">
+            <input type = "html" id="Question1Answer4"/>
+            <br>
+            <input type="button" onclick="submitForm(this.form)"; value="Save This Question">   
+        </form>
     </div>
+    <button onclick="addQuestion()">Add New Question</button>
 </body>
 </html>
