@@ -15,22 +15,25 @@
             <br>
             <textarea id="Question1Text">Your question goes here</textarea>
             <br>
-            <input type="radio" name="answers" value="Question1Answer1">
+            <input type="radio" name="answers1" value="Question1Answer0" checked="checked">
+            <input type = "html" id="Question1Answer0"/>
+            <br>
+            <input type="radio" name="answers1" value="Question1Answer1">
             <input type = "html" id="Question1Answer1"/>
             <br>
-            <input type="radio" name="answers" value="Question1Answer2">
-            <input type = "html" id="Question2Answer2"/>
+            <input type="radio" name="answers1" value="Question1Answer2">
+            <input type = "html" id="Question1Answer2"/>
             <br>
-            <input type="radio" name="answers" value="Question1Answer3">
+            <input type="radio" name="answers1" value="Question1Answer3">
             <input type = "html" id="Question1Answer3"/>
             <br>
-            <input type="radio" name="answers" value="Question1Answer4">
-            <input type = "html" id="Question1Answer4"/>
-            <br>
-            <input type="button" onclick="saveQuestion(this.form)"; value="Save This Question">   
+            <input type="button" onclick="saveQuestion(this.form)"; value="Save This Question">    
+             
         </form>
     </div>
     <button onclick="addQuestion()">Add New Question</button>
+    <br>
+    <button onclick="saveAll()">Save Your Whole Quiz</button>
 
 </body>
 </html>

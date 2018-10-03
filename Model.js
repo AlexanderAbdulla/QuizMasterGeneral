@@ -16,27 +16,27 @@ class Quiz{
     }
 
     addQuestion(question){
-        var found; 
-        // question id is 1
-        // but we have 0 saved questions
-        
-        // question id is 2 
-        // we have 1 saved question
-      //  console.log("id" + question.id)
-        //console.log("sq"+this.savedQuestions)
+     
 
         if(this.savedQuestions < question.id) {
             this.questions.push(question)
             this.savedQuestions++;
         }
-        this.getQuestions();
+      
+       this.getQuestions();
     }
 
-    getQuestions(id){
+    getQuestions(){
         for(var i = 0; i < this.questions.length; i++)
         {
-            console.log(this.questions[i].getquestionText());
+            //console.log(this.questions[i]);
         }
+        return this.questions;
+    }
+
+    deleteQuestion(id){
+        deleteQuestionView(id);
+       // this.questions.splice(id -1, 1);
     }
 }
 
