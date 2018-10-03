@@ -3,6 +3,7 @@ var test = "hkjdas";
 class Quiz{
     constructor(){
         this.amountOfQuestions = 1;
+        this.savedQuestions = 0;
         this.questions = new Array();
     }
     
@@ -15,8 +16,27 @@ class Quiz{
     }
 
     addQuestion(question){
-        this.questions.push(question);
-        alert("the test is" + question.questionText);
+        var found; 
+        // question id is 1
+        // but we have 0 saved questions
+        
+        // question id is 2 
+        // we have 1 saved question
+      //  console.log("id" + question.id)
+        //console.log("sq"+this.savedQuestions)
+
+        if(this.savedQuestions < question.id) {
+            this.questions.push(question)
+            this.savedQuestions++;
+        }
+        this.getQuestions();
+    }
+
+    getQuestions(id){
+        for(var i = 0; i < this.questions.length; i++)
+        {
+            console.log(this.questions[i].getquestionText());
+        }
     }
 }
 
@@ -29,5 +49,13 @@ class Question{
         this.answer3 = answer3;
         this.answer4 = answer4;
         this.correctAnswer = correctAnswer;
+    }
+
+    getid(){
+        return this.id;
+    }
+
+    getquestionText(){
+        return this.questionText;
     }
 }
