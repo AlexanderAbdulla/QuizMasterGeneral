@@ -3,6 +3,7 @@ var test = "hkjdas";
 class Quiz{
     constructor(){
         this.amountOfQuestions = 1;
+        this.questions = new Array();
     }
     
     getamountOfQuestions(){
@@ -11,6 +12,11 @@ class Quiz{
     
     setamountOfQuestions(newAmt){
         this.amountOfQuestions = newAmt;
+    }
+
+    addQuestion(question){
+        this.questions.push(question);
+        alert("the test is" + question.questionText);
     }
 }
 

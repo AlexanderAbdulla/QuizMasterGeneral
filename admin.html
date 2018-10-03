@@ -7,9 +7,9 @@
     <script src = "Controller.js" defer></script>
     
 </head>
-<body>
+<body style="text-align: center">
     <h1>Quiz Creator</h1>
-    <div id="quizDiv">
+    <div id="quizDiv"> 
         <form id="1">
             Question 1
             <br>
@@ -27,7 +27,7 @@
             <input type="radio" name="answers" value="Question1Answer4">
             <input type = "html" id="Question1Answer4"/>
             <br>
-            <input type="button" onclick="submitForm(this.form)"; value="Save This Question">   
+            <input type="button" onclick="saveQuestion(this.form)"; value="Save This Question">   
         </form>
     </div>
     <button onclick="addQuestion()">Add New Question</button>

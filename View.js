@@ -42,7 +42,7 @@ function addQuestionView(amountOfQuestions){
 
     var btn = document.createElement("INPUT");
     btn.setAttribute('type', 'button');
-    btn.setAttribute('onclick', 'submitForm(this.form)');
+    btn.setAttribute('onclick', 'saveQuestion(this.form)');
     btn.setAttribute('value', 'Save This Question')
     form.appendChild(btn);
 
