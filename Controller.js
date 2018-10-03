@@ -50,12 +50,28 @@ function saveAll(){
         //console.log("The amt of qs is" +quiz.getamountOfQuestions)
         localStorage.setItem("amountOfQuestions", quiz.getamountOfQuestions());
         localStorage.setItem("allQuestions", JSON.stringify(quiz.getQuestions()));
+        localStorage.setItem("amt", quiz.getamountOfQuestions());
+        /*
         for(var i = 0; i < quiz.getamountOfQuestions(); i++){
             var q = new Question();
             q = JSON.parse(localStorage.getItem("allQuestions"))[i];
             console.log(q);
-        }
+        }*/
     } else {
         // Sorry! No Web Storage support..
     }
+}
+
+function checkAnswers(){
+    console.log("Checking answers brah");
+    var counter = 0; 
+    $('#userForm').children('div').each(function(){
+        $(this).children('input').each(function(){
+            if($(this).is(":checked")){
+                console.log("the correct answer is" + $(this).attr('value'));
+            }
+        })
+        
+    })
+    
 }
