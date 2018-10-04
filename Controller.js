@@ -55,12 +55,15 @@ function saveAll(){
          localStorage.setItem("amountOfQuestions", quiz.getamountOfQuestions());
          localStorage.setItem("allQuestions", JSON.stringify(quiz.getQuestions()));
          localStorage.setItem("amt", quiz.getamountOfQuestions());
-        
+         console.log("We are in here");
+         console.log("We have stored" + localStorage.getItem("allQuestions"))
+         quiz.saveAllState();
         } else {
+            alert("no local storage supported");
         // this is not supported by browser
      }
     
-        quiz.saveAllState();
+        
     }
 }
 

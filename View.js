@@ -110,17 +110,16 @@ function deleteQuestionView(id){
 
 /*Loads the user quiz into the view */
 function loadUserQuiz(){
-    console.log("loading user quiz");
     var amountOfQuestions = localStorage.getItem("amt"); 
-    console.log("The amt is" + amountOfQuestions);
     for(var i = 0; i < amountOfQuestions; i++){
-        console.log("iterating");
         var q = new Question();
         q = JSON.parse(localStorage.getItem("allQuestions"))[i];
+        console.log(q)
         var last = false;; 
         if(i == amountOfQuestions -1) {
             last = true; 
         }
+        //console.log(q);
         addUserQuest(q, last);
         
     }
