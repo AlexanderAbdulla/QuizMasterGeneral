@@ -1,5 +1,4 @@
-var test = "hkjdas";
-
+/*Defines quiz class which holds all the data of the quiz */
 class Quiz{
     constructor(){
         this.amountOfQuestions = 1;
@@ -7,17 +6,18 @@ class Quiz{
         this.questions = new Array();
     }
     
+    /* Returns the amount of questions */
     getamountOfQuestions(){
         return this.amountOfQuestions;
     }
     
+    /* Sets the amount of questions */
     setamountOfQuestions(newAmt){
         this.amountOfQuestions = newAmt;
     }
 
+    /* Adds a question to the view */
     addQuestion(question){
-     
-
         if(this.savedQuestions < question.id) {
             this.questions.push(question)
             this.savedQuestions++;
@@ -28,22 +28,27 @@ class Quiz{
        addSavedQuestionView(question.getid());
     }
 
+    /* Gets an array of questions */
     getQuestions(){
         return this.questions;
     }
 
+    /* Deletes the questiom */
     deleteQuestion(id){
         deleteQuestionView(id);
     }
 
+    /* Stores all of the answers given in the quiz*/
     storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
         finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
     }
 
-    saveAllState(){
+    /* Saves all of the data of the quiz that has been taken and makes a results page*/
+    saveAllState(){ 
         finalSaveView();
     }
 
+    /* Checks all possible saving failures before submitting a quiz question*/
     validateSave(question){
         
         if (question.questionText == ""){
@@ -74,6 +79,7 @@ class Quiz{
         return true;
     }
 
+    /* Checks all possible failures before incrementing the amount of questions on the page in the view*/
     validateAdd(){
         if(this.savedQuestions < this.amountOfQuestions){
             writeToErrorDiv("Lets save before we continue, shall we?");
@@ -84,6 +90,7 @@ class Quiz{
     }
 }
 
+/* Defines a question class */
 class Question{
         constructor(id, questionText, answer1, answer2, answer3, answer4, correctAnswer){
         this.id = id;
@@ -95,10 +102,12 @@ class Question{
         this.correctAnswer = correctAnswer;
     }
 
+    /* Retuns the id of the question*/
     getid(){
         return this.id;
     }
 
+    /* Returns the text of the question */
     getquestionText(){
         return this.questionText;
     }

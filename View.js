@@ -1,11 +1,62 @@
-var testView = "sdasdsa";
-
+/* Adds questions to the admin view */
 function addQuestionView(amountOfQuestions){
     var quizDiv = document.getElementById("quizDiv");
     
     var form = document.createElement("form");
     form.id = amountOfQuestions;
-    
+
+    addHeadersToQV(form, amountOfQuestions);
+    addRadioToQV(form, amountOfQuestions);
+    addBtnsToQv(form, amountOfQuestions);
+    quizDiv.appendChild(form);
+}
+
+/* Add radio buttons to the question view*/
+function addBtnsToQv(form, amountOfQuestions){
+    var br = document.createElement("br");
+    form.appendChild(br);    
+
+    var btn = document.createElement("INPUT");
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('class', 'btn btn-success')
+    btn.setAttribute('onclick', 'saveQuestion(this.form)');
+    btn.setAttribute('value', 'Save')
+    btn.style.marginRight = "5px";
+    form.appendChild(btn);
+
+
+    var btn = document.createElement("INPUT");
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('class', 'btn btn-danger')
+    btn.setAttribute('onclick', 'deleteQuestion(this.form)');
+    btn.setAttribute('value', 'Delete')
+    form.appendChild(btn);
+}
+
+/* Adds radio buttons to the question view */
+function addRadioToQV(form, amountOfQuestions){
+    for (i = 0; i <4; i++){ 
+        var radiobtn = document.createElement("INPUT");
+        radiobtn.id = "Question"+amountOfQuestions+"Radio"+i;
+        radiobtn.setAttribute('type', 'radio');
+        radiobtn.setAttribute('value', 'Question'+amountOfQuestions+'Answer'+i)
+        radiobtn.setAttribute('name','answers'+amountOfQuestions)
+        if(i ==0){
+            radiobtn.setAttribute('checked', 'checked')
+        }
+        form.appendChild(radiobtn);
+
+        var input1 = document.createElement("INPUT");
+        input1.id = "Question"+amountOfQuestions+"Answer"+i;
+        input1.setAttribute("type", "html")
+        form.appendChild(input1);
+        var br = document.createElement("br");
+        form.appendChild(br);
+    }
+}
+
+/* Adds headers to the question view*/
+function addHeadersToQV(form, amountOfQuestions){
     var br = document.createElement("br");
     form.appendChild(br);
     
@@ -28,49 +79,10 @@ function addQuestionView(amountOfQuestions){
     form.appendChild(br);
     var br = document.createElement("br");
     form.appendChild(br);
-    
-
-    for (i = 0; i <4; i++){ 
-        var radiobtn = document.createElement("INPUT");
-        radiobtn.id = "Question"+amountOfQuestions+"Radio"+i;
-        radiobtn.setAttribute('type', 'radio');
-        radiobtn.setAttribute('value', 'Question'+amountOfQuestions+'Answer'+i)
-        radiobtn.setAttribute('name','answers'+amountOfQuestions)
-        if(i ==0){
-            radiobtn.setAttribute('checked', 'checked')
-        }
-        form.appendChild(radiobtn);
-
-        var input1 = document.createElement("INPUT");
-        input1.id = "Question"+amountOfQuestions+"Answer"+i;
-        input1.setAttribute("type", "html")
-        form.appendChild(input1);
-        var br = document.createElement("br");
-        form.appendChild(br);
-    }
-
-    var br = document.createElement("br");
-    form.appendChild(br);    
-
-    var btn = document.createElement("INPUT");
-    btn.setAttribute('type', 'button');
-    btn.setAttribute('class', 'btn btn-success')
-    btn.setAttribute('onclick', 'saveQuestion(this.form)');
-    btn.setAttribute('value', 'Save')
-    btn.style.marginRight = "5px";
-    form.appendChild(btn);
-
-
-    var btn = document.createElement("INPUT");
-    btn.setAttribute('type', 'button');
-    btn.setAttribute('class', 'btn btn-danger')
-    btn.setAttribute('onclick', 'deleteQuestion(this.form)');
-    btn.setAttribute('value', 'Delete')
-    form.appendChild(btn);
-
-    quizDiv.appendChild(form);
 }
 
+
+/* Deletes a question view by its id*/
 function deleteQuestionView(id){
     console.log("deleting" + id);
     var deletedEl = document.getElementById(id);
@@ -97,6 +109,7 @@ function deleteQuestionView(id){
     });
 }
 
+/*Loads the user quiz into the view */
 function loadUserQuiz(){
     console.log("loading user quiz");
     var amountOfQuestions = localStorage.getItem("amt"); 
@@ -113,12 +126,45 @@ function loadUserQuiz(){
         
     }
 }
+
+/* Redirects the view to the user page after results*/
+function takeQuiz(){
+    window.location = "user.html";
+}
+
+/* Redirects the view to a fresh quiz and resets the storage*/
+function writeNewQuiz(){
+    localStorage.clear();
+    window.location.reload();
+}
+
+/* Lets us a write a new quiz from the user page*/
+function writeNewQuizUser(){
+    localStorage.clear();
+    window.location = "admin.html";
+}
+
+/* Adds a saved question view*/
+function addSavedQuestionView(id){
+    document.getElementById(id).setAttribute("class", "p-3 mb-2 bg-success text-white");
+}
+
+/* Writes a message to the error div*/
+function writeToErrorDiv(message){
+    document.getElementById('errorDiv').innerHTML = message;
+}
+
+/* Clears the error div*/
+function clearErrorDiv(){
+    document.getElementById('errorDiv').innerHTML ="";
+}
+
+/* Adds all the questions written by the user to user.html*/
 function addUserQuest(q, last){
 
     amountOfQuestions = q.id;
     var form = document.createElement("div");
     form.id = amountOfQuestions;
-    //form.id = amountOfQuestions; 
     
     var uq = document.getElementById("userQuiz");
     var p  = document.createElement("h2");
@@ -128,16 +174,44 @@ function addUserQuest(q, last){
     
     form.appendChild(p);
 
-    var br = document.createElement("br");
-    form.appendChild(br);
+    addBr(form);
 
     var p2 = document.createElement("h5");
     p2.appendChild(document.createTextNode("Q: " + q.questionText))
     form.appendChild(p2);
 
+    addBr(form);
+ 
+    addRadioToRv(form, amountOfQuestions, q);
+    addBr(form);
     var br = document.createElement("br");
     form.appendChild(br);
 
+    checkIfLast(form, last);
+    document.getElementById("userForm").appendChild(form);
+}
+
+/* Adds a br*/
+function addBr(form){
+    var br = document.createElement("br");
+    form.appendChild(br);
+}
+
+/*Checks if this is the last question in the view and responds with adding buttons*/
+function checkIfLast(form, last){
+    if(last) {
+        var btn = document.createElement("button")
+        btn.setAttribute("type", 'button');
+        btn.setAttribute('onclick', 'checkAnswers()');
+        btn.setAttribute('value', "SUBMIT ANSWERS")
+        btn.setAttribute("class", "btn btn-success")
+        btn.innerHTML = "Check Answers"
+        form.appendChild(btn);
+    }
+}
+
+/* Adds the radio buttons to the results*/
+function addRadioToRv(form, amountOfQuestions, q){
     for (i = 0; i <4; i++){ 
         var radiobtn = document.createElement("INPUT");
         radiobtn.id = "Question"+amountOfQuestions+"Radio"+i;
@@ -154,7 +228,6 @@ function addUserQuest(q, last){
         var input1 = document.createElement("label");
         input1.id = "Question"+amountOfQuestions+"Answer"+i;
         if( i == 0){
-            //input1.appendChild(document.createTextNode(q.answer1));
             input1.innerHTML = q.answer1;
         } else if (i == 1){
             input1.innerHTML = q.answer2;
@@ -168,27 +241,10 @@ function addUserQuest(q, last){
         form.appendChild(br);
         document.getElementById("userForm").appendChild(form);
     }
-
-    var br = document.createElement("br");
-    form.appendChild(br);
-
-    
-    if(last) {
-        var btn = document.createElement("button")
-        btn.setAttribute("type", 'button');
-        btn.setAttribute('onclick', 'checkAnswers()');
-        btn.setAttribute('value', "SUBMIT ANSWERS")
-        btn.setAttribute("class", "btn btn-success")
-        btn.innerHTML = "Check Answers"
-        form.appendChild(btn);
-    }
-
-    document.getElementById("userForm").appendChild(form);
 }
-
+/* Displays the final results view*/
 function finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
    
-
     var uq = document.getElementById('userQuiz');
     document.getElementById('userForm').remove();
     
@@ -197,6 +253,12 @@ function finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswer
     h1.appendChild(tn);
     uq.appendChild(h1);
 
+    addDetailsToRv(uq, incorrectAnswers, incorrectQuestionNumbers, incorrectAnswerValues, correctedAnswerValues);
+    addBtnToRv(uq);
+}
+
+/* Adds details to the results view*/
+function addDetailsToRv(uq, incorrectAnswers, incorrectQuestionNumbers, incorrectAnswerValues, correctedAnswerValues){
     for (var i = 0; i < incorrectAnswers.length; i++){
 
         var p1 = document.createElement('h3');
@@ -212,30 +274,32 @@ function finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswer
         var p1 = document.createElement('h3');
         var tn = document.createTextNode("The correct answer was: " + correctedAnswerValues[i]);
         p1.appendChild(tn);
-        uq.appendChild(p1);
-       
+        uq.appendChild(p1);     
     }
-
-        var btn1 = document.createElement('button');
-        btn1.setAttribute("type", "button");
-        btn1.setAttribute("onclick", "takeQuiz()")
-        btn1.setAttribute("class", "btn btn-warning");
-        btn1.style.marginRight = "5px";
-        btn1.innerHTML = "Take The Quiz Again"
-    
-        uq.appendChild(btn1);
-    
-        var btn1 = document.createElement('button');
-        btn1.setAttribute("type", "button");
-        btn1.setAttribute("onclick", "writeNewQuizUser()")
-        btn1.setAttribute("class", "btn btn-info");
-        btn1.style.marginRight = "5px";
-        btn1.innerHTML = "Write A New Quiz"
-    
-        uq.appendChild(btn1);
-
 }
 
+/* Adds buttons to the results view */
+function addBtnToRv(uq){
+    var btn1 = document.createElement('button');
+    btn1.setAttribute("type", "button");
+    btn1.setAttribute("onclick", "takeQuiz()")
+    btn1.setAttribute("class", "btn btn-warning");
+    btn1.style.marginRight = "5px";
+    btn1.innerHTML = "Take The Quiz Again"
+
+    uq.appendChild(btn1);
+
+    var btn1 = document.createElement('button');
+    btn1.setAttribute("type", "button");
+    btn1.setAttribute("onclick", "writeNewQuizUser()")
+    btn1.setAttribute("class", "btn btn-info");
+    btn1.style.marginRight = "5px";
+    btn1.innerHTML = "Write A New Quiz"
+
+    uq.appendChild(btn1);
+}
+
+/* Displays the final save view*/
 function finalSaveView(){
     document.getElementById('errorDiv').setAttribute("class", "bg-success");
     document.getElementById('errorDiv').innerHTML = "The Quiz Was Made!";
@@ -243,7 +307,6 @@ function finalSaveView(){
     document.getElementById('btnAdd').remove();
     document.getElementById('btnSave').remove();
 
-    //take quiz
     var btn1 = document.createElement('button');
     btn1.setAttribute("type", "button");
     btn1.setAttribute("onclick", "takeQuiz()")
@@ -263,29 +326,3 @@ function finalSaveView(){
 
 }
 
-function takeQuiz(){
-    window.location = "user.html";
-}
-
-function writeNewQuiz(){
-    localStorage.clear();
-    window.location.reload();
-}
-
-function writeNewQuizUser(){
-    localStorage.clear();
-    window.location = "admin.html";
-}
-
-
-function addSavedQuestionView(id){
-    document.getElementById(id).setAttribute("class", "p-3 mb-2 bg-success text-white");
-}
-
-function writeToErrorDiv(message){
-    document.getElementById('errorDiv').innerHTML = message;
-}
-
-function clearErrorDiv(){
-    document.getElementById('errorDiv').innerHTML ="";
-}

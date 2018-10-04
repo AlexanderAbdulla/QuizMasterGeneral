@@ -1,5 +1,7 @@
+//Getting a quiz object
 var quiz = new Quiz();
 
+/*Saves a question and updates the model */
 function saveQuestion(formElement){
     var id = formElement.id;
     var questionText = document.getElementById("Question"+id+"Text").value;
@@ -24,6 +26,7 @@ function saveQuestion(formElement){
        
 }
 
+/* Adds a question to the model's list of questions */
 function addQuestion(){
     if(quiz.validateAdd() == true){
         var amountOfQuestions = quiz.getamountOfQuestions();
@@ -33,61 +36,73 @@ function addQuestion(){
     }    
 }
 
+/* Deletes a question from the model's list of questions */
 function deleteQuestion(formElement){
     var amountOfQuestions = quiz.getamountOfQuestions();
     amountOfQuestions--;
-    //console.log("new amt of questions" + amountOfQuestions);
     quiz.setamountOfQuestions(amountOfQuestions);
     var id = formElement.id;
     quiz.deleteQuestion(id);
 }
 
+/* Saves all of the quiz questions*/
 function saveAll(){
 
     if(validateSave()== true){
 
      if (typeof(Storage) !== "undefined") {
-        //console.log("The amt of qs is" +quiz.getamountOfQuestions)
          localStorage.setItem("amountOfQuestions", quiz.getamountOfQuestions());
          localStorage.setItem("allQuestions", JSON.stringify(quiz.getQuestions()));
          localStorage.setItem("amt", quiz.getamountOfQuestions());
         
         } else {
-        // Sorry! No Web Storage support..
+        // this is not supported by browser
      }
     
         quiz.saveAllState();
     }
 }
 
+/*Checks all of the answers and sees which ones have been selected */
 function checkAnswers(){
     console.log("Checking answers brah");
     var counter = 0; 
    
-    // iteratre thru each div (question) and get the answers we've picked
     var pickedAnswers = new Array();
     
     $('#userForm').children('div').each(function(){
-        //grab the answer that was picked
         $(this).children('input').each(function(){
             if($(this).is(":checked")) {
                 var p = $(this).attr('value');
-                // push the picked answers to an array 
                 pickedAnswers.push(p); 
         
             }
         }) 
-
-        // incremement to next div
-        counter++;
+       counter++;
     })
 
-    console.log("picked answers " + pickedAnswers);
+    parseAnswers(pickedAnswers, counter);
+    
+}
 
-    /*
-    variables for our new view
-    */
+/* Validates the save to see if any mistakes have been made in the quiz generation */
+function validateSave(){
+    document.getElementById('errorDiv').innerHTML = "";
+    if(quiz.savedQuestions == 0){
+        document.getElementById('errorDiv').innerHTML = "You have not saved any questions!";
+        return false;
+    }
 
+    if(quiz.savedQuestions < quiz.amountOfQuestions){
+        document.getElementById('errorDiv').innerHTML = "You have not saved all the questions!";
+        return false;
+    }
+    return true;
+}
+
+/* Parses all the raw answers and passes them to the view to create a results page*/
+function parseAnswers(pickedAnswers, counter){
+    
    var score = JSON.parse(localStorage.getItem("allQuestions")).length;
    var totalAnswers = JSON.parse(localStorage.getItem("allQuestions")).length;;
    var incorrectAnswers = new Array();
@@ -96,7 +111,6 @@ function checkAnswers(){
    var correctedAnswerValues = new Array();
    var incorrectQuestionNumbers = new Array();
     
-    //check if the answers are correct 
     for (var i = 0; i < counter; i++){
         console.log("checking for " + JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer);
         if(pickedAnswers[i] == JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer){
@@ -113,19 +127,4 @@ function checkAnswers(){
     }
 
     quiz.storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
-    
-}
-
-function validateSave(){
-    document.getElementById('errorDiv').innerHTML = "";
-    if(quiz.savedQuestions == 0){
-        document.getElementById('errorDiv').innerHTML = "You have not saved any questions!";
-        return false;
-    }
-
-    if(quiz.savedQuestions < quiz.amountOfQuestions){
-        document.getElementById('errorDiv').innerHTML = "You have not saved all the questions!";
-        return false;
-    }
-    return true;
 }
