@@ -5,35 +5,42 @@
     <script src = "View.js" defer></script>
     <script src = "Model.js" defer></script>
     <script src = "Controller.js" defer></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body style="text-align: center">
-    <h1>Quiz Creator</h1>
-    <div id="quizDiv"> 
-        <form id="1">
-            Question 1
-            <br>
-            <textarea id="Question1Text">Your question goes here</textarea>
-            <br>
-            <input type="radio" name="answers1" value="Question1Answer0" checked="checked">
-            <input type = "html" id="Question1Answer0"/>
-            <br>
-            <input type="radio" name="answers1" value="Question1Answer1">
-            <input type = "html" id="Question1Answer1"/>
-            <br>
-            <input type="radio" name="answers1" value="Question1Answer2">
-            <input type = "html" id="Question1Answer2"/>
-            <br>
-            <input type="radio" name="answers1" value="Question1Answer3">
-            <input type = "html" id="Question1Answer3"/>
-            <br>
-            <input type="button" onclick="saveQuestion(this.form)"; value="Save This Question">    
-             
-        </form>
+<body>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" style="text-align: center" id = "centerDiv">
+                <h1 class ="display-2" >Quiz Creator</h1>
+                <div id = "errorDiv" class="bg-danger"></div>
+                <div id="quizDiv"> 
+                    <form id="1" >
+                        <h2>Question 1</h2>
+                        <br>
+                        <textarea style="resize:none" rows="3" id="Question1Text">Your question goes here</textarea>
+                        <br>
+                        <input type="radio" name="answers1" value="Question1Answer0" checked="checked">
+                        <input  type = "html" id="Question1Answer0"/>
+                        <br>
+                        <input type="radio" name="answers1" value="Question1Answer1">
+                        <input type = "html" id="Question1Answer1"/>
+                        <br>
+                        <input type="radio" name="answers1" value="Question1Answer2">
+                        <input type = "html" id="Question1Answer2"/>
+                        <br>
+                        <input type="radio" name="answers1" value="Question1Answer3">
+                        <input type = "html" id="Question1Answer3"/>
+                        <br>
+                        <br>
+                        <input class="btn btn-success" type="button" onclick="saveQuestion(this.form)"; value="Save This Question">                 
+                    </form>
+                </div>
+                <button   class="btn btn-primary" id="btnAdd" onclick="addQuestion()">Add New Question</button>
+                <br>
+                <br>
+                <button   class="btn btn-warning" id="btnSave" onclick="saveAll()">Save Your Whole Quiz</button>
+        </div>
+        <div class="col-sm-4"></div>
     </div>
-    <button onclick="addQuestion()">Add New Question</button>
-    <br>
-    <button onclick="saveAll()">Save Your Whole Quiz</button>
-
 </body>
 </html>

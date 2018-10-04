@@ -9,7 +9,7 @@ function addQuestionView(amountOfQuestions){
     var br = document.createElement("br");
     form.appendChild(br);
     
-    var p = document.createElement("p");
+    var p = document.createElement("h2");
     p.id = "Title"+amountOfQuestions;
     var text = document.createTextNode("Question "+amountOfQuestions);
     p.appendChild(text);
@@ -21,8 +21,11 @@ function addQuestionView(amountOfQuestions){
     var textarea = document.createElement("textarea");
     textarea.setAttribute('value', 'Your question goes here');
     textarea.id = "Question"+amountOfQuestions+"Text";
+    textarea.style.resize = "none";
     form.appendChild(textarea);
 
+    var br = document.createElement("br");
+    form.appendChild(br);
     var br = document.createElement("br");
     form.appendChild(br);
     
@@ -46,16 +49,23 @@ function addQuestionView(amountOfQuestions){
         form.appendChild(br);
     }
 
-    var btn = document.createElement("INPUT");
-    btn.setAttribute('type', 'button');
-    btn.setAttribute('onclick', 'saveQuestion(this.form)');
-    btn.setAttribute('value', 'Save This Question')
-    form.appendChild(btn);
+    var br = document.createElement("br");
+    form.appendChild(br);    
 
     var btn = document.createElement("INPUT");
     btn.setAttribute('type', 'button');
+    btn.setAttribute('class', 'btn btn-success')
+    btn.setAttribute('onclick', 'saveQuestion(this.form)');
+    btn.setAttribute('value', 'Save')
+    btn.style.marginRight = "5px";
+    form.appendChild(btn);
+
+
+    var btn = document.createElement("INPUT");
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('class', 'btn btn-danger')
     btn.setAttribute('onclick', 'deleteQuestion(this.form)');
-    btn.setAttribute('value', 'Delete This Question')
+    btn.setAttribute('value', 'Delete')
     form.appendChild(btn);
 
     quizDiv.appendChild(form);
@@ -111,17 +121,18 @@ function addUserQuest(q, last){
     //form.id = amountOfQuestions; 
     
     var uq = document.getElementById("userQuiz");
-    var p  = document.createElement("p");
+    var p  = document.createElement("h2");
     
     p.id = "Title" + q.id;
     p.appendChild(document.createTextNode("Question " + q.id))
+    
     form.appendChild(p);
 
     var br = document.createElement("br");
     form.appendChild(br);
 
-    var p2 = document.createElement("p");
-    form.appendChild(document.createTextNode(q.questionText))
+    var p2 = document.createElement("h5");
+    p2.appendChild(document.createTextNode("Q: " + q.questionText))
     form.appendChild(p2);
 
     var br = document.createElement("br");
@@ -133,8 +144,10 @@ function addUserQuest(q, last){
         radiobtn.setAttribute('type', 'radio');
         radiobtn.setAttribute('value', 'Question'+amountOfQuestions+'Answer'+i)
         radiobtn.setAttribute('name','answers'+amountOfQuestions)
+        radiobtn.style.textAlign = "left"
+        
         if(i ==0){
-           // radiobtn.setAttribute('checked', 'checked')
+            radiobtn.setAttribute('checked', 'checked')
         }
         form.appendChild(radiobtn);
 
@@ -156,13 +169,17 @@ function addUserQuest(q, last){
         document.getElementById("userForm").appendChild(form);
     }
 
+    var br = document.createElement("br");
+    form.appendChild(br);
+
     
     if(last) {
         var btn = document.createElement("button")
         btn.setAttribute("type", 'button');
         btn.setAttribute('onclick', 'checkAnswers()');
         btn.setAttribute('value', "SUBMIT ANSWERS")
-        btn.innerHTML = "CHECK YO SHIT"
+        btn.setAttribute("class", "btn btn-success")
+        btn.innerHTML = "Check Answers"
         form.appendChild(btn);
     }
 
@@ -170,15 +187,7 @@ function addUserQuest(q, last){
 }
 
 function finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
-    console.log("----------------------------------------")
-    console.log("final score = " + score + " out of  " + totalAnswers);
-    for (var i = 0; i < incorrectAnswers.length; i++){
-        console.log("Mistake at Question" + incorrectQuestionNumbers[i])
-        console.log("The incorrect answer was: " + incorrectAnswers[i]);
-        console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
-        console.log("The correct answer was " + correctedAnswers[i]);
-        console.log("The correct answer value was: " + correctedAnswerValues[i]);
-    }
+   
 
     var uq = document.getElementById('userQuiz');
     document.getElementById('userForm').remove();
@@ -189,27 +198,94 @@ function finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswer
     uq.appendChild(h1);
 
     for (var i = 0; i < incorrectAnswers.length; i++){
-        //console.log("Mistake at Question" + incorrectQuestionNumbers[i])
-        var p1 = document.createElement('p');
-        var tn = document.createTextNode("There was a mistake at question " + incorrectQuestionNumbers[i]);
+
+        var p1 = document.createElement('h3');
+        var tn = document.createTextNode("There was a mistake at: Question " + incorrectQuestionNumbers[i]);
         p1.appendChild(tn);
         uq.appendChild(p1);
     
-        //console.log("The incorrect answer was: " + incorrectAnswers[i]);
-    //    console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
-        var p1 = document.createElement('p');
+        var p1 = document.createElement('h3');
         var tn = document.createTextNode("You guessed: " + incorrectAnswerValues[i]);
         p1.appendChild(tn);
         uq.appendChild(p1);
     
-        //console.log("The correct answer was " + correctedAnswers[i]);
-        var p1 = document.createElement('p');
+        var p1 = document.createElement('h3');
         var tn = document.createTextNode("The correct answer was: " + correctedAnswerValues[i]);
         p1.appendChild(tn);
         uq.appendChild(p1);
-    
-       // console.log("The correct answer value was: " + correctedAnswerValues[i]);
+       
     }
 
+        var btn1 = document.createElement('button');
+        btn1.setAttribute("type", "button");
+        btn1.setAttribute("onclick", "takeQuiz()")
+        btn1.setAttribute("class", "btn btn-warning");
+        btn1.style.marginRight = "5px";
+        btn1.innerHTML = "Take The Quiz Again"
+    
+        uq.appendChild(btn1);
+    
+        var btn1 = document.createElement('button');
+        btn1.setAttribute("type", "button");
+        btn1.setAttribute("onclick", "writeNewQuizUser()")
+        btn1.setAttribute("class", "btn btn-info");
+        btn1.style.marginRight = "5px";
+        btn1.innerHTML = "Write A New Quiz"
+    
+        uq.appendChild(btn1);
 
+}
+
+function finalSaveView(){
+    document.getElementById('errorDiv').setAttribute("class", "bg-success");
+    document.getElementById('errorDiv').innerHTML = "The Quiz Was Made!";
+    document.getElementById('quizDiv').remove();
+    document.getElementById('btnAdd').remove();
+    document.getElementById('btnSave').remove();
+
+    //take quiz
+    var btn1 = document.createElement('button');
+    btn1.setAttribute("type", "button");
+    btn1.setAttribute("onclick", "takeQuiz()")
+    btn1.setAttribute("class", "btn btn-primary")
+    btn1.style.marginRight = "5px"
+    btn1.innerHTML = "Take The Quiz"
+
+    document.getElementById('centerDiv').appendChild(btn1);
+
+    var btn1 = document.createElement('button');
+    btn1.setAttribute("type", "button");
+    btn1.setAttribute("onclick", "writeNewQuiz()")
+    btn1.setAttribute("class", "btn btn-info")
+    btn1.innerHTML = "Write A New Quiz"
+
+    document.getElementById('centerDiv').appendChild(btn1);
+
+}
+
+function takeQuiz(){
+    window.location = "user.html";
+}
+
+function writeNewQuiz(){
+    localStorage.clear();
+    window.location.reload();
+}
+
+function writeNewQuizUser(){
+    localStorage.clear();
+    window.location = "admin.html";
+}
+
+
+function addSavedQuestionView(id){
+    document.getElementById(id).setAttribute("class", "p-3 mb-2 bg-success text-white");
+}
+
+function writeToErrorDiv(message){
+    document.getElementById('errorDiv').innerHTML = message;
+}
+
+function clearErrorDiv(){
+    document.getElementById('errorDiv').innerHTML ="";
 }

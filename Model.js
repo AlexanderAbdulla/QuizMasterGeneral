@@ -24,23 +24,63 @@ class Quiz{
         }
       
        this.getQuestions();
+       clearErrorDiv();
+       addSavedQuestionView(question.getid());
     }
 
     getQuestions(){
-        for(var i = 0; i < this.questions.length; i++)
-        {
-            //console.log(this.questions[i]);
-        }
         return this.questions;
     }
 
     deleteQuestion(id){
         deleteQuestionView(id);
-       // this.questions.splice(id -1, 1);
     }
 
     storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
         finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
+    }
+
+    saveAllState(){
+        finalSaveView();
+    }
+
+    validateSave(question){
+        
+        if (question.questionText == ""){
+            writeToErrorDiv("You have no question text")
+            return false;
+        } 
+
+        if (question.answer1 == ""){
+            writeToErrorDiv("You are missing an answer")
+            return false;
+        } 
+
+        if (question.answer2 == ""){
+            writeToErrorDiv("You are missing an answer")
+            return false;
+        } 
+
+        if (question.answer3 == ""){
+            writeToErrorDiv("You are missing an answer")
+            return false;
+        } 
+
+        if (question.answer4 == ""){
+            writeToErrorDiv("You are missing an answer")
+            return false;
+        } 
+        
+        return true;
+    }
+
+    validateAdd(){
+        if(this.savedQuestions < this.amountOfQuestions){
+            writeToErrorDiv("Lets save before we continue, shall we?");
+            return false;
+        }
+
+        return true;
     }
 }
 
@@ -62,32 +102,4 @@ class Question{
     getquestionText(){
         return this.questionText;
     }
-}
-
-class QuizAnswers {
-
-    constructor(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
-        this.score = score;
-        this.totalAnswers = totalAnswers;
-        this.incorrectAnswers = incorrectAnswers;
-        this.correctedAnswers = correctedAnswers;
-        this.incorrectAnswerValues = incorrectAnswerValues;
-        this.correctedAnswerValues = correctedAnswerValues;
-        this.incorrectQuestionNumbers = incorrectQuestionNumbers;
-    }
-
-    printQuizAnswers(){
-        for (var i = 0; i < incorrectAnswers.length; i++){
-            console.log("Mistake at Question" + incorrectQuestionNumbers[i])
-            console.log("The incorrect answer was: " + incorrectAnswers[i]);
-            console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
-            console.log("The correct answer was " + correctedAnswers[i]);
-            console.log("The correct answer value was: " + correctedAnswerValues[i]);
-        }
-    }
- 
-}
-
-function testFx(){
-    console.log("hiwoayah")
 }
