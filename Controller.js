@@ -3,6 +3,7 @@ var quiz = new Quiz();
 
 /*Saves a question and updates the model */
 function saveQuestion(formElement){
+    console.log("made it to the save fx")
     var id = formElement.id;
     var questionText = document.getElementById("Question"+id+"Text").value;
     
@@ -31,6 +32,7 @@ function addQuestion(){
     if(quiz.validateAdd() == true){
         var amountOfQuestions = quiz.getamountOfQuestions();
         amountOfQuestions++;
+        
         quiz.setamountOfQuestions(amountOfQuestions);
         addQuestionView(amountOfQuestions);    
     }    
@@ -40,6 +42,8 @@ function addQuestion(){
 function deleteQuestion(formElement){
     var amountOfQuestions = quiz.getamountOfQuestions();
     amountOfQuestions--;
+    //saved qs too?
+    //quiz.savedQuestions--;
     quiz.setamountOfQuestions(amountOfQuestions);
     var id = formElement.id;
     quiz.deleteQuestion(id);

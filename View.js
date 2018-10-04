@@ -91,8 +91,8 @@ function deleteQuestionView(id){
 
      $('#quizDiv').children('form').each(function () {
         $(this).attr("id", counter);
-        $(this).find("p").html("Question " + counter);
-        $(this).find("p").attr("id", "Title"+counter);
+        $(this).find("h2").html("Question " + counter);
+        $(this).find("h2").attr("id", "Title"+counter);
         $(this).find("textarea").attr("id", "Question"+counter+"Text")
         var radioCounter = 0;
         $(this).children('input').each(function (){
