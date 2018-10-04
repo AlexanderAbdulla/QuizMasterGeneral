@@ -20,10 +20,11 @@ function saveQuestion(formElement){
         if(radios[i].checked)
             var correctAnswer = radios[i].value;
     }
-    
-    var correctAnswerValue = document.getElementById(correctAnswer).value;
 
-    var question = new Question(id, questionText, answer1, answer2, answer3, answer4, correctAnswerValue);
+    
+    
+
+    var question = new Question(id, questionText, answer1, answer2, answer3, answer4, correctAnswer);
     
     quiz.addQuestion(question);
        
@@ -65,13 +66,70 @@ function saveAll(){
 function checkAnswers(){
     console.log("Checking answers brah");
     var counter = 0; 
+    
+
+    /*
+    Score : ___ / ___
+    Incorrect Questions :  q1, q2
+    Correct Aswers: 
+    */
+   
+    // iteratre thru each div (question) and get the answers we've picked
+    var pickedAnswers = new Array();
+    
     $('#userForm').children('div').each(function(){
+        //grab the answer that was picked
         $(this).children('input').each(function(){
-            if($(this).is(":checked")){
-                console.log("the correct answer is" + $(this).attr('value'));
-            }
-        })
+            if($(this).is(":checked")) {
+                var p = $(this).attr('value');
+                // push the picked answers to an array 
+                pickedAnswers.push(p); 
         
+            }
+        }) 
+
+        // incremement to next div
+        counter++;
     })
+
+    console.log("picked answers " + pickedAnswers);
+
+    /*
+    variables for our new view
+    */
+
+   var score = JSON.parse(localStorage.getItem("allQuestions")).length;
+   var totalAnswers = JSON.parse(localStorage.getItem("allQuestions")).length;;
+   var incorrectAnswers = new Array();
+   var correctedAnswers = new Array();
+   var incorrectAnswerValues = new Array();
+   var correctedAnswerValues = new Array();
+   var incorrectQuestionNumbers = new Array();
+    
+    //check if the answers are correct 
+    for (var i = 0; i < counter; i++){
+        console.log("checking for " + JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer);
+        if(pickedAnswers[i] == JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer){
+            console.log("got a match");
+        } else {
+            console.log("no match");
+            incorrectAnswers.push(pickedAnswers[i]);
+            incorrectAnswerValues.push(document.getElementById(pickedAnswers[i]).innerHTML)
+            correctedAnswers.push(JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer);
+            correctedAnswerValues.push(document.getElementById(JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer).innerHTML)
+            incorrectQuestionNumbers.push(i + 1);
+            score--;
+        }
+    }
+
+    console.log("----------------------------------------")
+    console.log("final score = " + score + " out of  " + totalAnswers);
+    for (var i = 0; i < incorrectAnswers.length; i++){
+        console.log("Mistake at Question" + incorrectQuestionNumbers[i])
+        console.log("The incorrect answer was: " + incorrectAnswers[i]);
+        console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
+        console.log("The correct answer was " + correctedAnswers[i]);
+        console.log("The correct answer value was: " + correctedAnswerValues[i]);
+    }
     
 }
