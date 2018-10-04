@@ -38,6 +38,10 @@ class Quiz{
         deleteQuestionView(id);
        // this.questions.splice(id -1, 1);
     }
+
+    storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
+        finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
+    }
 }
 
 class Question{
@@ -58,4 +62,32 @@ class Question{
     getquestionText(){
         return this.questionText;
     }
+}
+
+class QuizAnswers {
+
+    constructor(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
+        this.score = score;
+        this.totalAnswers = totalAnswers;
+        this.incorrectAnswers = incorrectAnswers;
+        this.correctedAnswers = correctedAnswers;
+        this.incorrectAnswerValues = incorrectAnswerValues;
+        this.correctedAnswerValues = correctedAnswerValues;
+        this.incorrectQuestionNumbers = incorrectQuestionNumbers;
+    }
+
+    printQuizAnswers(){
+        for (var i = 0; i < incorrectAnswers.length; i++){
+            console.log("Mistake at Question" + incorrectQuestionNumbers[i])
+            console.log("The incorrect answer was: " + incorrectAnswers[i]);
+            console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
+            console.log("The correct answer was " + correctedAnswers[i]);
+            console.log("The correct answer value was: " + correctedAnswerValues[i]);
+        }
+    }
+ 
+}
+
+function testFx(){
+    console.log("hiwoayah")
 }

@@ -168,3 +168,48 @@ function addUserQuest(q, last){
 
     document.getElementById("userForm").appendChild(form);
 }
+
+function finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers){
+    console.log("----------------------------------------")
+    console.log("final score = " + score + " out of  " + totalAnswers);
+    for (var i = 0; i < incorrectAnswers.length; i++){
+        console.log("Mistake at Question" + incorrectQuestionNumbers[i])
+        console.log("The incorrect answer was: " + incorrectAnswers[i]);
+        console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
+        console.log("The correct answer was " + correctedAnswers[i]);
+        console.log("The correct answer value was: " + correctedAnswerValues[i]);
+    }
+
+    var uq = document.getElementById('userQuiz');
+    document.getElementById('userForm').remove();
+    
+    var h1 = document.createElement('h1');
+    var tn = document.createTextNode('Your Final Score Is: ' + score + " out of " + totalAnswers);
+    h1.appendChild(tn);
+    uq.appendChild(h1);
+
+    for (var i = 0; i < incorrectAnswers.length; i++){
+        //console.log("Mistake at Question" + incorrectQuestionNumbers[i])
+        var p1 = document.createElement('p');
+        var tn = document.createTextNode("There was a mistake at question " + incorrectQuestionNumbers[i]);
+        p1.appendChild(tn);
+        uq.appendChild(p1);
+    
+        //console.log("The incorrect answer was: " + incorrectAnswers[i]);
+    //    console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
+        var p1 = document.createElement('p');
+        var tn = document.createTextNode("You guessed: " + incorrectAnswerValues[i]);
+        p1.appendChild(tn);
+        uq.appendChild(p1);
+    
+        //console.log("The correct answer was " + correctedAnswers[i]);
+        var p1 = document.createElement('p');
+        var tn = document.createTextNode("The correct answer was: " + correctedAnswerValues[i]);
+        p1.appendChild(tn);
+        uq.appendChild(p1);
+    
+       // console.log("The correct answer value was: " + correctedAnswerValues[i]);
+    }
+
+
+}

@@ -66,13 +66,6 @@ function saveAll(){
 function checkAnswers(){
     console.log("Checking answers brah");
     var counter = 0; 
-    
-
-    /*
-    Score : ___ / ___
-    Incorrect Questions :  q1, q2
-    Correct Aswers: 
-    */
    
     // iteratre thru each div (question) and get the answers we've picked
     var pickedAnswers = new Array();
@@ -122,14 +115,24 @@ function checkAnswers(){
         }
     }
 
-    console.log("----------------------------------------")
-    console.log("final score = " + score + " out of  " + totalAnswers);
-    for (var i = 0; i < incorrectAnswers.length; i++){
-        console.log("Mistake at Question" + incorrectQuestionNumbers[i])
-        console.log("The incorrect answer was: " + incorrectAnswers[i]);
-        console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
-        console.log("The correct answer was " + correctedAnswers[i]);
-        console.log("The correct answer value was: " + correctedAnswerValues[i]);
-    }
+  
+   // var q = new testClass();
+    
+   // quiz.getQuestions();
+
+   console.log("----------------------------------------")
+   console.log("final score = " + score + " out of  " + totalAnswers);
+   for (var i = 0; i < incorrectAnswers.length; i++){
+       console.log("Mistake at Question" + incorrectQuestionNumbers[i])
+       console.log("The incorrect answer was: " + incorrectAnswers[i]);
+       console.log("The incorrect answer value was: " + incorrectAnswerValues[i]);
+       console.log("The correct answer was " + correctedAnswers[i]);
+       console.log("The correct answer value was: " + correctedAnswerValues[i]);
+   }
+    quiz.storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
+
+    //var q = new QuizAnswers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
+    //var q = new QuizAnswers(1, 2, 3, 4, 5, 6, 7, 8);
+    //q.printQuizAnswers();
     
 }
