@@ -24,7 +24,6 @@ function addBtnsToQv(form, amountOfQuestions){
     btn.style.marginRight = "5px";
     form.appendChild(btn);
 
-
     var btn = document.createElement("INPUT");
     btn.setAttribute('type', 'button');
     btn.setAttribute('class', 'btn btn-danger')
@@ -82,7 +81,7 @@ function addHeadersToQV(form, amountOfQuestions){
 }
 
 
-/* Deletes a question view by its id*/
+/* Deletes a question view by its id and adjusts the rest*/
 function deleteQuestionView(id){
     console.log("deleting" + id);
     var deletedEl = document.getElementById(id);
@@ -91,8 +90,8 @@ function deleteQuestionView(id){
 
      $('#quizDiv').children('form').each(function () {
         $(this).attr("id", counter);
-        $(this).find("p").html("Question " + counter);
-        $(this).find("p").attr("id", "Title"+counter);
+        $(this).find("h2").html("Question " + counter);
+        $(this).find("h2").attr("id", "Title"+counter);
         $(this).find("textarea").attr("id", "Question"+counter+"Text")
         var radioCounter = 0;
         $(this).children('input').each(function (){
@@ -181,11 +180,8 @@ function addUserQuest(q, last){
     form.appendChild(p2);
 
     addBr(form);
- 
     addRadioToRv(form, amountOfQuestions, q);
     addBr(form);
-    var br = document.createElement("br");
-    form.appendChild(br);
 
     checkIfLast(form, last);
     document.getElementById("userForm").appendChild(form);

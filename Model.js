@@ -2,7 +2,7 @@
 class Quiz{
     constructor(){
         this.amountOfQuestions = 1;
-        this.savedQuestions = 0;
+        this.savedQuestions = 1;
         this.questions = new Array();
     }
     

@@ -41,6 +41,7 @@ function deleteQuestion(formElement){
     var amountOfQuestions = quiz.getamountOfQuestions();
     amountOfQuestions--;
     quiz.setamountOfQuestions(amountOfQuestions);
+   // quiz.savedQuestions--;
     var id = formElement.id;
     quiz.deleteQuestion(id);
 }
@@ -65,7 +66,6 @@ function saveAll(){
 
 /*Checks all of the answers and sees which ones have been selected */
 function checkAnswers(){
-    console.log("Checking answers brah");
     var counter = 0; 
    
     var pickedAnswers = new Array();
@@ -100,7 +100,7 @@ function validateSave(){
     return true;
 }
 
-/* Parses all the raw answers and passes them to the view to create a results page*/
+/* Parses all the raw answers and passes them to the model then to the view to create a results page*/
 function parseAnswers(pickedAnswers, counter){
     
    var score = JSON.parse(localStorage.getItem("allQuestions")).length;
@@ -112,11 +112,9 @@ function parseAnswers(pickedAnswers, counter){
    var incorrectQuestionNumbers = new Array();
     
     for (var i = 0; i < counter; i++){
-        console.log("checking for " + JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer);
         if(pickedAnswers[i] == JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer){
-            console.log("got a match");
+            //console.log("got a match");
         } else {
-            console.log("no match");
             incorrectAnswers.push(pickedAnswers[i]);
             incorrectAnswerValues.push(document.getElementById(pickedAnswers[i]).innerHTML)
             correctedAnswers.push(JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer);
