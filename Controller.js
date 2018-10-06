@@ -32,7 +32,6 @@ function addQuestion(){
     if(quiz.validateAdd() == true){
         var amountOfQuestions = quiz.getamountOfQuestions();
         amountOfQuestions++;
-        
         quiz.setamountOfQuestions(amountOfQuestions);
         addQuestionView(amountOfQuestions);    
     }    

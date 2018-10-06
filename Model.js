@@ -1,3 +1,11 @@
+//Gets the database
+
+var database =  firebase.database();
+
+//Testing the database
+//TODO remove this 
+database.ref('LaunchData').set({Counter : 5});
+
 /*Defines quiz class which holds all the data of the quiz */
 class Quiz{
     constructor(){
@@ -18,6 +26,7 @@ class Quiz{
 
     /* Adds a question to the view */
     addQuestion(question){
+        //TODO investigate if this is where our counting error is
         if(this.savedQuestions < question.id) {
             this.questions.push(question)
             this.savedQuestions++;
