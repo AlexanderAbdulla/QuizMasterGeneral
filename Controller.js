@@ -1,5 +1,35 @@
 //Getting a quiz object
 var quiz = new Quiz();
+var uid;
+
+/* set auth data on login */
+//TODO put in model?
+firebase.auth().onAuthStateChanged(function(user) {
+    console.log("auth state has changed")
+    if (user) {
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      uid = user.uid;
+      var providerData = user.providerData;
+      console.log("email" + email);
+      document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
+      console.log ("uid is" + uid)
+
+      getQuizzes(uid);
+      // ...
+    } else {
+      // User is signed out.
+      // ...
+      console.log("user is signed out??? why??");
+    }
+});
+
+
+
 
 /*Saves a question and updates the model */
 function saveQuestion(formElement){
@@ -50,7 +80,7 @@ function deleteQuestion(formElement){
 
 /* Saves all of the quiz questions*/
 function saveAll(){
-
+    console.log("the uid is " + uid)
     if(validateSave()== true){
 
      if (typeof(Storage) !== "undefined") {
@@ -58,12 +88,16 @@ function saveAll(){
          localStorage.setItem("allQuestions", JSON.stringify(quiz.getQuestions()));
          localStorage.setItem("amt", quiz.getamountOfQuestions());
          console.log("We are in here");
-         console.log("We have stored" + localStorage.getItem("allQuestions"))
+         console.log("We have stored" + localStorage.getItem("allQuestions"))        
+         quiz.quizTitle = document.getElementById('QuizTitle').value;
          quiz.saveAllState();
+         database.ref(uid).push(quiz);
         } else {
             alert("no local storage supported");
         // this is not supported by browser
      }
+
+     
     
         
     }
@@ -181,31 +215,74 @@ function redirectAdmin(){
 }
 
 // user info ??
-var email; 
+//var email; 
 
-/* set auth data on login */
-//TODO put in model?
-firebase.auth().onAuthStateChanged(function(user) {
-    console.log("auth state has changed")
-    if (user) {
-      // User is signed in.
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
-      var providerData = user.providerData;
-      console.log("email" + email);
-      document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
-      // ...
-    } else {
-      // User is signed out.
-      // ...
-      console.log("user is signed out??? why??");
-    }
-});
   
 
 /* updates user info*/
+function getQuizzes(uid){
+    console.log("getting quizzes")
+    //console.log("emauk is " + email)
+    console.log('uid is ' + uid);
+    //user.uid 
+    var ref = firebase.database().ref(uid);
+    console.log(uid);
+    ref.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          console.log('the key is '+ childSnapshot.key);
+          //console.log('the question is' + ref.child('questions').);
+         // var thisQ = new Quiz();
+        // console.log("this titel is" + thisQ.quizTitle)
+          var thisQ = childSnapshot.val();
+          var key = childSnapshot.key;
+          populateUserQuizzesView(thisQ, key);
+         
+        });
+    });
+}
 
+/* populate view with guesses*/
+
+function populateUserQuizzesView(thisQ, key){
+    
+    var uq = document.getElementById('yourQuizzes');
+    var quizTitle = document.createElement('button');
+    quizTitle.id = uid + "/" + key;
+    quizTitle.setAttribute('onclick', "redirectToQuiz(this.id)")
+    quizTitle.innerHTML =  thisQ.quizTitle;
+    uq.appendChild(quizTitle);
+    uq.appendChild(document.createElement('br'))
+    uq.appendChild(document.createElement('br'))
+}
+
+/* Redirect To User Quiz*/
+function redirectToQuiz(id){
+    console.log('id is ' + id)
+    window.location = "user2.php?quizID=" + id;
+}
+
+/* Populate page with specific quizes*/
+function loadQuiz(id){
+    console.log('loading quiz')
+    var quiz;
+    var amountOfQuestions;
+    var questions;
+    var ref = firebase.database().ref(id);
+    ref.once('value', function(snapshot) {
+       //console.log(snapshot.val())
+       quiz = snapshot.val();
+        console.log(quiz.questions);
+        localStorage.setItem("quizTitle", quiz.quizTitle);
+        localStorage.setItem("amountOfQuestions", quiz.amountOfQuestions);
+        localStorage.setItem("allQuestions", JSON.stringify(quiz.questions));
+        localStorage.setItem("amt", quiz.amountOfQuestions);
+        loadUserQuiz();
+    });
+    
+    /*
+    localStorage.setItem("amountOfQuestions", amountOfQuestions);
+    localStorage.setItem("allQuestions", JSON.stringify(questions);
+    localStorage.setItem("amt", quiz.getamountOfQuestions());
+    loadUserQuiz();
+    */
+}

@@ -11,8 +11,17 @@ class Quiz{
         this.amountOfQuestions = 1;
         this.savedQuestions = 0;
         this.questions = new Array();
+        this.quizTitle = "";
     }
     
+    getQuizTitle(){
+        return this.quizTitle;
+    }
+
+    setQuizTitle(quizTitle){
+        this.quizTitle = this.quizTitle;
+    }
+
     /* Returns the amount of questions */
     getamountOfQuestions(){
         return this.amountOfQuestions;
