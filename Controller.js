@@ -134,3 +134,78 @@ function parseAnswers(pickedAnswers, counter){
 
     quiz.storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
 }
+
+/* Signs up a new user */
+function createNewUser(){
+    var email = document.getElementById("usernameInput").value;
+    var password = document.getElementById("passwordInput").value;
+    console.log("Creating a new user...")
+    console.log("the email is" + email)
+    console.log("The password is" + password)
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        console.log("in this function?");
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        
+        if(errorCode == "auth/invalid-email"){
+            document.getElementById("errorDiv").innerHTML = "Your email address is invalid bro"; 
+        } else{
+           // window.location.replace("options.html");
+        }
+
+        console.log(errorMessage)
+      });
+}
+
+/* Logs in a user*/
+
+function login(){
+    var email = document.getElementById("usernameInput").value;
+    var password = document.getElementById("passwordInput").value;
+    console.log("the email is" + email)
+    console.log("The password is" + password)
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+     //   window.location.replace("options.html");
+            console.log(errorMessage);
+        // ...
+      });
+}
+
+/* redirects to admin page */
+function redirectAdmin(){
+    window.location.replace("admin.html");
+}
+
+// user info ??
+var email; 
+
+/* set auth data on login */
+//TODO put in model?
+firebase.auth().onAuthStateChanged(function(user) {
+    console.log("auth state has changed")
+    if (user) {
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      var providerData = user.providerData;
+      console.log("email" + email);
+      document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
+      // ...
+    } else {
+      // User is signed out.
+      // ...
+      console.log("user is signed out??? why??");
+    }
+});
+  
+
+/* updates user info*/
+

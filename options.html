@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
@@ -16,20 +16,18 @@
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4" style="text-align: center" id = "centerDiv">
-                <h1 class ="display-2" >Quiz Creator</h1>
-                <br>
-                <div id = "errorDiv" class="bg-danger"></div>
-                <br>
-                <label>Username</label>
-                <input type="text" id="usernameInput">
-                <br>
-                <br>
-                <label>Password</label>
-                <input type="password" id="passwordInput">
-                <br>
-                <br>
-                <button class="btn btn-success" onclick="login()">Login</button>
-                <button class="btn btn-primary" onclick="createNewUser()">Sign Up</button>
+            <h1 id="welcomeTxt">Welcome</h1>
+            <br>
+            <h3>Your Quizzes</h3>
+            <br>
+            <div id="yourQuizzes"></div>
+            <br>
+            <div id="emptyTxt" style="font-style: italic">WOW SUCH EMPTY</div>
+            <br>
+            <h3 id="otherQuizzes">Other Quizzes</h3>
+            <br>
+            <br>
+            <button class="btn btn-success" onclick="redirectAdmin()">Create New Quiz</button>
         </div>
         <div class="col-sm-4"></div>
     </div>

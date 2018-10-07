@@ -1,5 +1,4 @@
 //Gets the database
-
 var database =  firebase.database();
 
 //Testing the database
