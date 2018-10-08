@@ -34,9 +34,24 @@ firebase.auth().onAuthStateChanged(function(user) {
 /*Saves a question and updates the model */
 function saveQuestion(formElement){
     console.log("made it to the save fx")
-    var id = formElement.id;
-    var questionText = document.getElementById("Question"+id+"Text").value;
     
+    var id = formElement.id;
+
+   // console.log("diff val is " + document.getElementById("Question"+id+"Difficulty").checked)
+    /*
+    <input id="Question1Difficulty" type = "radio" name = "Question1Difficulty" checked="checked" value="easy">
+                        <label>Hard</label>
+                        <input id="Question1Difficulty" type = "radio" name = "Question1Difficulty" value="hard">
+    */
+   var difficulty;
+    if(document.getElementById('Question'+ id + 'Easy').checked){
+        difficulty = false;
+    } else {
+        difficulty = true; 
+    }
+
+    console.log("difficulty is " + difficulty)
+    var questionText = document.getElementById("Question"+id+"Text").value;
     var answer1 = document.getElementById("Question"+id+"Answer"+0).value;
     var answer2 = document.getElementById("Question"+id+"Answer"+1).value;
     var answer3 = document.getElementById("Question"+id+"Answer"+2).value;
@@ -50,7 +65,7 @@ function saveQuestion(formElement){
             var correctAnswer = radios[i].value;
     }
 
-    var question = new Question(id, questionText, answer1, answer2, answer3, answer4, correctAnswer);
+    var question = new Question(id, questionText, answer1, answer2, answer3, answer4, correctAnswer, difficulty);
     if(quiz.validateSave(question) == true){
         quiz.addQuestion(question);
     }
@@ -61,6 +76,7 @@ function saveQuestion(formElement){
 function addQuestion(){
     if(quiz.validateAdd() == true){
         var amountOfQuestions = quiz.getamountOfQuestions();
+        //quiz.savedQuestions++;
         amountOfQuestions++;
         quiz.setamountOfQuestions(amountOfQuestions);
         addQuestionView(amountOfQuestions);    
@@ -68,19 +84,35 @@ function addQuestion(){
 }
 
 /* Deletes a question from the model's list of questions */
+
+/*
 function deleteQuestion(formElement){
     var amountOfQuestions = quiz.getamountOfQuestions();
+    //BUG REMOVE BELOW
     amountOfQuestions--;
+    //BUG ADD BELOW
+    
+
     //saved qs too?
     //quiz.savedQuestions--;
     quiz.setamountOfQuestions(amountOfQuestions);
     var id = formElement.id;
     quiz.deleteQuestion(id);
+}*/
+
+//NEW
+function deleteQuestion(formElement){
+    if(formElement.value =="saved"){
+        quiz.savedQuestions--;
+    }
+    quiz.amountOfQuestions--;
+    quiz.deleteQuestion(formElement.id)
 }
 
 /* Saves all of the quiz questions*/
 function saveAll(){
     console.log("the uid is " + uid)
+    
     if(validateSave()== true){
 
      if (typeof(Storage) !== "undefined") {
@@ -90,6 +122,8 @@ function saveAll(){
          console.log("We are in here");
          console.log("We have stored" + localStorage.getItem("allQuestions"))        
          quiz.quizTitle = document.getElementById('QuizTitle').value;
+         saved = true;
+         console.log('saved' + saved)
          quiz.saveAllState();
          database.ref(uid).push(quiz);
         } else {
@@ -126,6 +160,7 @@ function checkAnswers(){
 }
 
 /* Validates the save to see if any mistakes have been made in the quiz generation */
+
 function validateSave(){
     document.getElementById('errorDiv').innerHTML = "";
     if(quiz.savedQuestions == 0){
@@ -139,6 +174,7 @@ function validateSave(){
     }
     return true;
 }
+
 
 /* Parses all the raw answers and passes them to the view to create a results page*/
 function parseAnswers(pickedAnswers, counter){
@@ -303,14 +339,17 @@ function loadQuiz(id){
 
 
 /* Checks if a user is in, modifies accordingly*/
+/*
 function loadOptions(dummy){
    firebase.auth().onAuthStateChanged(function(user){
         if(user){
             //do nothing
+            var wt = document.getElementById('titleText');
+            wt.innerHTML = "Welcome " + user.email
         } else {
             var od = document.getElementById('optionsDiv');
             od.innerHTML = "";
-            var wt = document.getElementById('welcomeTxt');
+            var wt = document.getElementById('titleText');
             wt.innerHTML = "Welcome Guest! Login To Access Quizzes";
             var lb = document.createElement('button');
             lb.setAttribute('class', "btn btn-success");
@@ -320,19 +359,18 @@ function loadOptions(dummy){
         }
     });
 }
-
+*/
 
 /* Checks if a user is in, modifies accordingly*/
  function checkLogin(dummy){
     firebase.auth().onAuthStateChanged(function(user){
         if(user){
-            //do nothing
-            console.log("the user is logged in at " + user.email)
-                // document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
+                console.log("the user is logged in at " + user.email)
                 console.log ("uid is" + user.uid)
                 getQuizzes(user.uid)
-               //getQuizzes(uid);
             
+             //  var wt = document.getElementById('titleText');
+               //wt.innerHTML = "Welcome " + user.email
 
         } else {
             var od = document.getElementById('loggedInDiv');
@@ -367,6 +405,13 @@ function loadOptions(dummy){
             
         }
     });
+ }
+
+ /* Logs out a user */
+ function logoutUser(){
+    firebase.auth().signOut();
+    window.location.replace('index.html')
+
  }
 
 

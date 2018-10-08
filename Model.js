@@ -12,6 +12,7 @@ class Quiz{
         this.savedQuestions = 0;
         this.questions = new Array();
         this.quizTitle = "";
+        
     }
     
     getQuizTitle(){
@@ -33,6 +34,7 @@ class Quiz{
     }
 
     /* Adds a question to the view */
+    /*BUG
     addQuestion(question){
         //TODO investigate if this is where our counting error is
         if(this.savedQuestions < question.id) {
@@ -44,6 +46,16 @@ class Quiz{
        clearErrorDiv();
        addSavedQuestionView(question.getid());
     }
+*/
+    addQuestion(question){
+        this.questions.push(question)
+        this.savedQuestions++;
+        
+        this.getQuestions();
+        clearErrorDiv();
+        addSavedQuestionView(question.getid());
+    }
+
 
     /* Gets an array of questions */
     getQuestions(){
@@ -98,10 +110,15 @@ class Quiz{
 
     /* Checks all possible failures before incrementing the amount of questions on the page in the view*/
     validateAdd(){
+        
         if(this.savedQuestions < this.amountOfQuestions){
             writeToErrorDiv("Lets save before we continue, shall we?");
+            console.log('the amt of questions is ' + this.amountOfQuestions)
+            console.log('the saved questions are ' + this.savedQuestions)
             return false;
         }
+        
+      
 
         return true;
     }
@@ -109,7 +126,7 @@ class Quiz{
 
 /* Defines a question class */
 class Question{
-        constructor(id, questionText, answer1, answer2, answer3, answer4, correctAnswer){
+        constructor(id, questionText, answer1, answer2, answer3, answer4, correctAnswer, difficulty){
         this.id = id;
         this.questionText = questionText;
         this.answer1 = answer1;
@@ -117,6 +134,7 @@ class Question{
         this.answer3 = answer3;
         this.answer4 = answer4;
         this.correctAnswer = correctAnswer;
+        this.difficulty = difficulty;
     }
 
     /* Retuns the id of the question*/

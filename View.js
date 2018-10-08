@@ -57,6 +57,9 @@ function addRadioToQV(form, amountOfQuestions){
 
 /* Adds headers to the question view*/
 function addHeadersToQV(form, amountOfQuestions){
+
+    id = form.id;
+
     var br = document.createElement("br");
     form.appendChild(br);
     
@@ -68,6 +71,37 @@ function addHeadersToQV(form, amountOfQuestions){
 
     var br = document.createElement("br");
     form.appendChild(br);
+
+    /*
+    <label>Easy</label>
+                        <input id="Question1Easy" type = "radio" name = "Question1Difficulty" checked="checked" value="easy">
+                        <label>Hard</label>
+                        <input id="Question1Hard" type = "radio" name = "Question1Difficulty" value="hard">
+    */
+
+    var lbl = document.createElement('label')
+    lbl.innerHTML = 'Easy'
+    form.appendChild(lbl)
+
+    var inp = document.createElement('input')
+    inp.setAttribute('type','radio')
+    inp.setAttribute('name', 'Question'+ id+ 'Difficulty')
+    inp.id = "Question"+id+"Easy"
+    inp.value = "easy"
+    inp.setAttribute('checked', 'checked')
+    form.appendChild(inp)
+
+    var lbl = document.createElement('label')
+    lbl.innerHTML = 'Hard'
+    form.appendChild(lbl)
+
+    var inp = document.createElement('input')
+    inp.setAttribute('type','radio')
+    inp.setAttribute('name', 'Question'+ id+ 'Difficulty')
+    inp.id = "Question"+id+"Hard"
+    inp.value = "easy"
+    inp.setAttribute('checked', 'checked')
+    form.appendChild(inp)
     
     var textarea = document.createElement("textarea");
     textarea.setAttribute('value', 'Your question goes here');
@@ -87,6 +121,7 @@ function deleteQuestionView(id){
     console.log("deleting" + id);
     var deletedEl = document.getElementById(id);
     deletedEl.parentNode.removeChild(deletedEl);
+    //bug
     var counter = 1;
 
      $('#quizDiv').children('form').each(function () {
@@ -129,7 +164,7 @@ function loadUserQuiz(){
 
 /* Redirects the view to the user page after results*/
 function takeQuiz(){
-    window.location = "admin.html";
+    window.location.reload();
 }
 
 /* Redirects the view to a fresh quiz and resets the storage*/
@@ -146,7 +181,8 @@ function writeNewQuizUser(){
 
 /* Adds a saved question view*/
 function addSavedQuestionView(id){
-    document.getElementById(id).setAttribute("class", "p-3 mb-2 bg-success text-white");
+    document.getElementById(id).setAttribute("class", "p-3 mb-2 bg-success text-white")
+    document.getElementById(id).setAttribute('value', 'saved');
 }
 
 /* Writes a message to the error div*/
@@ -170,7 +206,11 @@ function addUserQuest(q, last){
     var p  = document.createElement("h2");
     
     p.id = "Title" + q.id;
-    p.appendChild(document.createTextNode("Question " + q.id))
+    if(q.difficulty == true){
+        p.appendChild(document.createTextNode("Question " + q.id + " (hard)"))
+    } else {
+        p.appendChild(document.createTextNode("Question " + q.id + " (easy)"))
+    }
     
     form.appendChild(p);
 
@@ -285,18 +325,11 @@ function addBtnToRv(uq){
     btn1.setAttribute("onclick", "takeQuiz()")
     btn1.setAttribute("class", "btn btn-warning");
     btn1.style.marginRight = "5px";
-    btn1.innerHTML = "Check Quizzes";
-
+    btn1.innerHTML = "Take Quiz Again";
+    uq.appendChild(document.createElement('br'))
     uq.appendChild(btn1);
 
-    var btn1 = document.createElement('button');
-    btn1.setAttribute("type", "button");
-    btn1.setAttribute("onclick", "writeNewQuizUser()")
-    btn1.setAttribute("class", "btn btn-info");
-    btn1.style.marginRight = "5px";
-    btn1.innerHTML = "Write A New Quiz"
-
-    uq.appendChild(btn1);
+    
 }
 
 /* Displays the final save view*/
@@ -306,23 +339,23 @@ function finalSaveView(){
     document.getElementById('quizDiv').remove();
     document.getElementById('btnAdd').remove();
     document.getElementById('btnSave').remove();
+    document.getElementById('QuizTitle').remove();
 
     var btn1 = document.createElement('button');
     btn1.setAttribute("type", "button");
-    btn1.setAttribute("onclick", "takeQuiz()")
+    btn1.setAttribute("onclick", "checkQuizzes()")
     btn1.setAttribute("class", "btn btn-primary")
     btn1.style.marginRight = "5px"
     btn1.innerHTML = "Check Your Quizzes"
 
     document.getElementById('centerDiv').appendChild(btn1);
 
-    var btn1 = document.createElement('button');
-    btn1.setAttribute("type", "button");
-    btn1.setAttribute("onclick", "writeNewQuiz()")
-    btn1.setAttribute("class", "btn btn-info")
-    btn1.innerHTML = "Write A New Quiz"
+    
 
-    document.getElementById('centerDiv').appendChild(btn1);
+}
 
+/* Redirects to admin */
+function checkQuizzes(){
+    window.location.replace('options.html');
 }
 
