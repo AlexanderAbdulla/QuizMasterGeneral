@@ -1,7 +1,8 @@
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">    
     <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase.js"></script>
     <script src="secretScripts.js"></script>
     <script>
@@ -12,15 +13,34 @@
     <script src = "Controller.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body onload="checkLogin(1)">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="index.html">QuizMasterGeneral</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link" href="options.html">Your Quizzes</a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="admin.html">Make Quiz<span class="sr-only">(current)</span></a>
+                    </li>
+                    
+                  </ul>
+                </div>
+              </nav>
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4" style="text-align: center" id = "centerDiv">
-                <h1 class ="display-2" >Quiz Creator</h1>
+                <h1 id="titleText" class ="h1" >Make Your Quiz</h1>
+                <div id= 'loggedInDiv'>
                 <div id = "errorDiv" class="bg-danger"></div>
                 <div id="quizDiv"> 
                     <form id="1" >
                         <h2>Quiz Name</h2>
+                        
                         <input type = "text" id = "QuizTitle" value = "Your Quiz Title Here">
                         <h2>Question 1</h2>
                         <br>
@@ -40,6 +60,7 @@
                         <br>
                         <br>
                         <input class="btn btn-success" type="button" onclick="saveQuestion(this.form)"; value="Save This Question">                 
+                        </div>
                     </form>
                 </div>
                 <button   class="btn btn-primary" id="btnAdd" onclick="addQuestion()">Add New Question</button>

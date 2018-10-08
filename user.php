@@ -1,6 +1,7 @@
+
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">    
     <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase.js"></script>
@@ -11,11 +12,10 @@
     <script>
         firebaseInit();
     </script>
-        <meta name="viewport" content="width=device-width, user-scalable=false;">
 </head>
-<body onload="loadUserQuiz()" >
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="index.html">QuizMasterGeneral</a>
+<body onload="loadQuiz('<?php echo $_GET['quizID']?>')" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">QuizMasterGeneral</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
@@ -27,12 +27,10 @@
                     <li class="nav-item">
                       <a class="nav-link" href="admin.html">Make Quiz</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link active" href="user.html">Take Quiz<span class="sr-only">(current)</span></a>
-                    </li>
+                    
                   </ul>
                 </div>
-        </nav>    
+        </nav>  
     <div class="row">
             <div class="col-sm-4"></div>
             <div class="col-sm-4">

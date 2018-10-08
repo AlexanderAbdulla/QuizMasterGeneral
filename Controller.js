@@ -16,10 +16,10 @@ firebase.auth().onAuthStateChanged(function(user) {
       uid = user.uid;
       var providerData = user.providerData;
       console.log("email" + email);
-      document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
+     // document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
       console.log ("uid is" + uid)
 
-      getQuizzes(uid);
+      //getQuizzes(uid);
       // ...
     } else {
       // User is signed out.
@@ -199,14 +199,23 @@ function login(){
     var password = document.getElementById("passwordInput").value;
     console.log("the email is" + email)
     console.log("The password is" + password)
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+    var error = true;
+
+    //  window.location.replace("options.html");
+
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
         // Handle Errors here.
+       
+       // if(errorMessage == ""){
+       // }
+      //document.getElementById('errorDiv').innerHTML = errorMessage;
+      window.location.replace('options.html')
+      }).catch(function(error){
         var errorCode = error.code;
         var errorMessage = error.message;
-     //   window.location.replace("options.html");
-            console.log(errorMessage);
-        // ...
-      });
+        
+        document.getElementById('errorDiv').innerHTML = errorMessage;  
+    });
 }
 
 /* redirects to admin page */
@@ -214,8 +223,8 @@ function redirectAdmin(){
     window.location.replace("admin.html");
 }
 
-// user info ??
-//var email; 
+//TO DO
+// ALL OF THE SHIT BELOW NEEDS TO BE MVC'D UP DAWG
 
   
 
@@ -258,7 +267,12 @@ function populateUserQuizzesView(thisQ, key){
 /* Redirect To User Quiz*/
 function redirectToQuiz(id){
     console.log('id is ' + id)
-    window.location = "user2.php?quizID=" + id;
+    window.location = "user.php?quizID=" + id;
+}
+
+/* Redirect to index*/
+function redirectToIndex(){
+    window.location = "index.html";
 }
 
 /* Populate page with specific quizes*/
@@ -286,3 +300,78 @@ function loadQuiz(id){
     loadUserQuiz();
     */
 }
+
+
+/* Checks if a user is in, modifies accordingly*/
+function loadOptions(dummy){
+   firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            //do nothing
+        } else {
+            var od = document.getElementById('optionsDiv');
+            od.innerHTML = "";
+            var wt = document.getElementById('welcomeTxt');
+            wt.innerHTML = "Welcome Guest! Login To Access Quizzes";
+            var lb = document.createElement('button');
+            lb.setAttribute('class', "btn btn-success");
+            lb.innerHTML = "Login"
+            lb.setAttribute('onclick', 'redirectToIndex()')
+            od.appendChild(lb)
+        }
+    });
+}
+
+
+/* Checks if a user is in, modifies accordingly*/
+ function checkLogin(dummy){
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            //do nothing
+            console.log("the user is logged in at " + user.email)
+                // document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
+                console.log ("uid is" + user.uid)
+                getQuizzes(user.uid)
+               //getQuizzes(uid);
+            
+
+        } else {
+            var od = document.getElementById('loggedInDiv');
+            od.innerHTML = "";
+            if(document.getElementById('btnAdd')){
+                document.getElementById('btnAdd').remove();
+                document.getElementById('btnSave').remove();  
+            } 
+         
+            var wt = document.getElementById('titleText');
+            wt.innerHTML = "Welcome Guest! Please Login!!";
+            var lb = document.createElement('button');
+            lb.setAttribute('class', "btn btn-success");
+            lb.innerHTML = "Login"
+            lb.setAttribute('onclick', 'redirectToIndex()')
+            od.appendChild(lb)
+        }
+    });
+ }
+
+ /* Display Logout if Necessary*/
+ function displayLogout(dummy){
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            document.getElementById('loggedInDiv').innerHTML = ""
+            var btn = document.createElement('button')
+            btn.setAttribute('onclick', 'logoutUser()')
+            btn.setAttribute('class', 'btn btn-danger')
+            btn.innerHTML = "Logout"
+            document.getElementById('loggedInDiv').appendChild(btn)
+        } else {
+            
+        }
+    });
+ }
+
+
+
+
+
+
+

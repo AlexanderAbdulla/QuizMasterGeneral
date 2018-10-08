@@ -111,6 +111,7 @@ function deleteQuestionView(id){
 
 /*Loads the user quiz into the view */
 function loadUserQuiz(){
+    
     var amountOfQuestions = localStorage.getItem("amt"); 
     for(var i = 0; i < amountOfQuestions; i++){
         var q = new Question();
@@ -128,7 +129,7 @@ function loadUserQuiz(){
 
 /* Redirects the view to the user page after results*/
 function takeQuiz(){
-    window.location = "user.html";
+    window.location = "admin.html";
 }
 
 /* Redirects the view to a fresh quiz and resets the storage*/
@@ -284,7 +285,7 @@ function addBtnToRv(uq){
     btn1.setAttribute("onclick", "takeQuiz()")
     btn1.setAttribute("class", "btn btn-warning");
     btn1.style.marginRight = "5px";
-    btn1.innerHTML = "Take The Quiz Again"
+    btn1.innerHTML = "Check Quizzes";
 
     uq.appendChild(btn1);
 
@@ -311,7 +312,7 @@ function finalSaveView(){
     btn1.setAttribute("onclick", "takeQuiz()")
     btn1.setAttribute("class", "btn btn-primary")
     btn1.style.marginRight = "5px"
-    btn1.innerHTML = "Take The Quiz"
+    btn1.innerHTML = "Check Your Quizzes"
 
     document.getElementById('centerDiv').appendChild(btn1);
 

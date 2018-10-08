@@ -10,3 +10,7 @@ var config = {
   };
   firebase.initializeApp(config);
 }
+
+function loadOptions(){
+  console.log('test')
+}

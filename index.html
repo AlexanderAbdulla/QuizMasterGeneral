@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">    
     <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase.js"></script>
     <script src="secretScripts.js"></script>
     <script>
@@ -12,12 +13,29 @@
     <script src = "Controller.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body onload="displayLogout(1)">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="index.html">QuizMasterGeneral</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link" href="options.html">Your Quizzes<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="admin.html">Make Quiz</a>
+                    </li>
+                    
+                  </ul>
+                </div>
+            </nav>
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4" style="text-align: center" id = "centerDiv">
-                <h1 class ="display-2" >Quiz Creator</h1>
-                <br>
+                <h1>Quiz Creator</h1>
+                <div id= 'loggedInDiv'>
                 <div id = "errorDiv" class="bg-danger"></div>
                 <br>
                 <label>Username</label>
@@ -30,6 +48,7 @@
                 <br>
                 <button class="btn btn-success" onclick="login()">Login</button>
                 <button class="btn btn-primary" onclick="createNewUser()">Sign Up</button>
+                </div>
         </div>
         <div class="col-sm-4"></div>
     </div>
