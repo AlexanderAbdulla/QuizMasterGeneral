@@ -41,6 +41,7 @@ function addRadioToQV(form, amountOfQuestions){
         radiobtn.setAttribute('type', 'radio');
         radiobtn.setAttribute('value', 'Question'+amountOfQuestions+'Answer'+i)
         radiobtn.setAttribute('name','answers'+amountOfQuestions)
+        
         if(i ==0){
             radiobtn.setAttribute('checked', 'checked')
         }
@@ -65,8 +66,10 @@ function addHeadersToQV(form, amountOfQuestions){
     
     var p = document.createElement("h2");
     p.id = "Title"+amountOfQuestions;
+    
     var text = document.createTextNode("Question "+amountOfQuestions);
     p.appendChild(text);
+    
     form.appendChild(p);
 
     var br = document.createElement("br");
@@ -204,6 +207,7 @@ function addUserQuest(q, last){
     
     var uq = document.getElementById("userQuiz");
     var p  = document.createElement("h2");
+    p.style.textAlign = "center"
     
     p.id = "Title" + q.id;
     if(q.difficulty == true){
@@ -217,6 +221,7 @@ function addUserQuest(q, last){
     addBr(form);
 
     var p2 = document.createElement("h5");
+    p2.style.textAlign = "center"
     p2.appendChild(document.createTextNode("Q: " + q.questionText))
     form.appendChild(p2);
 
@@ -246,6 +251,7 @@ function checkIfLast(form, last){
         btn.setAttribute('value', "SUBMIT ANSWERS")
         btn.setAttribute("class", "btn btn-success")
         btn.innerHTML = "Check Answers"
+        btn.style.marginLeft = "10vw"
         form.appendChild(btn);
     }
 }
@@ -258,7 +264,7 @@ function addRadioToRv(form, amountOfQuestions, q){
         radiobtn.setAttribute('type', 'radio');
         radiobtn.setAttribute('value', 'Question'+amountOfQuestions+'Answer'+i)
         radiobtn.setAttribute('name','answers'+amountOfQuestions)
-        radiobtn.style.textAlign = "left"
+        radiobtn.style.marginLeft = "10vw"
         
         if(i ==0){
             radiobtn.setAttribute('checked', 'checked')
@@ -266,6 +272,8 @@ function addRadioToRv(form, amountOfQuestions, q){
         form.appendChild(radiobtn);
 
         var input1 = document.createElement("label");
+        input1.style.marginLeft = "1vw"
+        
         input1.id = "Question"+amountOfQuestions+"Answer"+i;
         if( i == 0){
             input1.innerHTML = q.answer1;
