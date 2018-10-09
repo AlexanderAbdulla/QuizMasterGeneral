@@ -150,6 +150,8 @@ function deleteQuestionView(id){
 /*Loads the user quiz into the view */
 function loadUserQuiz(){
     
+    
+
     var amountOfQuestions = localStorage.getItem("amt"); 
     for(var i = 0; i < amountOfQuestions; i++){
         var q = new Question();
@@ -159,7 +161,10 @@ function loadUserQuiz(){
         if(i == amountOfQuestions -1) {
             last = true; 
         }
-        //console.log(q);
+
+        document.getElementById('quizTitle').innerHTML = localStorage.getItem('quizTitle')
+
+
         addUserQuest(q, last);
         
     }
@@ -200,6 +205,8 @@ function clearErrorDiv(){
 
 /* Adds all the questions written by the user to user.html*/
 function addUserQuest(q, last){
+
+    
 
     amountOfQuestions = q.id;
     var form = document.createElement("div");
