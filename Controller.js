@@ -294,8 +294,19 @@ function populateUserQuizzesView(thisQ, key){
     var quizTitle = document.createElement('button');
     quizTitle.id = uid + "/" + key;
     quizTitle.setAttribute('onclick', "redirectToQuiz(this.id)")
+    quizTitle.setAttribute('class', 'btn btn-primary')
     quizTitle.innerHTML =  thisQ.quizTitle;
     uq.appendChild(quizTitle);
+
+    var quizDelete = document.createElement('button');
+    quizDelete.id = uid + "/" + key;
+    quizDelete.setAttribute('onclick', 'deleteQuiz(this.id)')
+    quizDelete.setAttribute('class', 'btn btn-danger')
+    quizDelete.innerHTML = "X";
+    console.log('quiz delete butting about to be added')
+    console.log(quizDelete);
+    uq.appendChild(quizDelete);
+
     uq.appendChild(document.createElement('br'))
     uq.appendChild(document.createElement('br'))
 }
@@ -379,7 +390,8 @@ function loadOptions(dummy){
                 document.getElementById('btnAdd').remove();
                 document.getElementById('btnSave').remove();  
             } 
-         
+            
+            saved = true; 
             var wt = document.getElementById('titleText');
             wt.innerHTML = "Welcome Guest! Please Login!!";
             var lb = document.createElement('button');
@@ -414,6 +426,17 @@ function loadOptions(dummy){
 
  }
 
+ function deleteQuiz(id){
+    var ref = firebase.database().ref(id).remove();
+    window.location.reload();
+ }
+
+ /*
+function redirectToQuiz(id){
+    console.log('id is ' + id)
+    window.location = "user.php?quizID=" + id;
+}
+ */
 
 
 
