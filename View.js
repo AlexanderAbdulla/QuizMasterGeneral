@@ -310,6 +310,7 @@ function finalResultsView(score, totalAnswers, incorrectAnswers, correctedAnswer
 
     addDetailsToRv(uq, incorrectAnswers, incorrectQuestionNumbers, incorrectAnswerValues, correctedAnswerValues);
     addBtnToRv(uq);
+    
 }
 
 /* Adds details to the results view*/
@@ -343,6 +344,15 @@ function addBtnToRv(uq){
     btn1.innerHTML = "Take Quiz Again";
     uq.appendChild(document.createElement('br'))
     uq.appendChild(btn1);
+    
+    var btn1 = document.createElement('button');
+    btn1.setAttribute("type", "button");
+    btn1.setAttribute("onclick", "checkQuizzes()")
+    btn1.setAttribute("class", "btn btn-prinary");
+    btn1.style.marginRight = "5px";
+    btn1.innerHTML = "Make A Quiz";
+
+    uq.appendChild(btn1)
 
     
 }
