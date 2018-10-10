@@ -1,9 +1,20 @@
 //Gets the database
 var database =  firebase.database();
+//The user ID
+var uid;
 
-//Testing the database
-//TODO remove this 
-database.ref('LaunchData').set({Counter : 5});
+/* set auth data on login */
+firebase.auth().onAuthStateChanged(function(user) {
+    console.log("auth state has changed")
+    if (user) {
+        // set UID
+      uid = user.uid;
+    } else {
+     // do nothing
+    }
+});
+
+
 
 /*Defines quiz class which holds all the data of the quiz */
 class Quiz{

@@ -1,62 +1,43 @@
 //Getting a quiz object
 var quiz = new Quiz();
-var uid;
 
-/* set auth data on login */
-//TODO put in model?
-firebase.auth().onAuthStateChanged(function(user) {
-    console.log("auth state has changed")
-    if (user) {
-      // User is signed in.
-      var displayName = user.displayName;
-      var email = user.email;
-      var emailVerified = user.emailVerified;
-      var photoURL = user.photoURL;
-      var isAnonymous = user.isAnonymous;
-      uid = user.uid;
-      var providerData = user.providerData;
-      console.log("email" + email);
-     // document.getElementById("welcomeTxt").innerHTML = "Welcome " + email; 
-      console.log ("uid is" + uid)
+/* Adds a question to the model's list of questions */
+function addQuestion(){
+    if(quiz.validateAdd() == true){
+        var amountOfQuestions = quiz.getamountOfQuestions();
+        //quiz.savedQuestions++;
+        amountOfQuestions++;
+        quiz.setamountOfQuestions(amountOfQuestions);
+        addQuestionView(amountOfQuestions);    
+    }    
+}
 
-      //getQuizzes(uid);
-      // ...
-    } else {
-      // User is signed out.
-      // ...
-      console.log("user is signed out??? why??");
+/* Deletes a quiz question and updates the model*/
+function deleteQuestion(formElement){
+    if(formElement.value =="saved"){
+        quiz.savedQuestions--;
     }
-});
-
-
-
+    quiz.amountOfQuestions--;
+    quiz.deleteQuestion(formElement.id)
+}
 
 /*Saves a question and updates the model */
 function saveQuestion(formElement){
-    console.log("made it to the save fx")
-    
+   
     var id = formElement.id;
-
-   // console.log("diff val is " + document.getElementById("Question"+id+"Difficulty").checked)
-    /*
-    <input id="Question1Difficulty" type = "radio" name = "Question1Difficulty" checked="checked" value="easy">
-                        <label>Hard</label>
-                        <input id="Question1Difficulty" type = "radio" name = "Question1Difficulty" value="hard">
-    */
-   var difficulty;
+    var difficulty;
     if(document.getElementById('Question'+ id + 'Easy').checked){
         difficulty = false;
     } else {
         difficulty = true; 
     }
 
-    console.log("difficulty is " + difficulty)
+   // grabbing the values to validate them and update the model 
     var questionText = document.getElementById("Question"+id+"Text").value;
     var answer1 = document.getElementById("Question"+id+"Answer"+0).value;
     var answer2 = document.getElementById("Question"+id+"Answer"+1).value;
     var answer3 = document.getElementById("Question"+id+"Answer"+2).value;
     var answer4 = document.getElementById("Question"+id+"Answer"+3).value;
-    
     var radios = document.getElementsByName('answers'+id);
 
     for(var i = 0; i < radios.length; i++){
@@ -70,43 +51,6 @@ function saveQuestion(formElement){
         quiz.addQuestion(question);
     }
        
-}
-
-/* Adds a question to the model's list of questions */
-function addQuestion(){
-    if(quiz.validateAdd() == true){
-        var amountOfQuestions = quiz.getamountOfQuestions();
-        //quiz.savedQuestions++;
-        amountOfQuestions++;
-        quiz.setamountOfQuestions(amountOfQuestions);
-        addQuestionView(amountOfQuestions);    
-    }    
-}
-
-/* Deletes a question from the model's list of questions */
-
-/*
-function deleteQuestion(formElement){
-    var amountOfQuestions = quiz.getamountOfQuestions();
-    //BUG REMOVE BELOW
-    amountOfQuestions--;
-    //BUG ADD BELOW
-    
-
-    //saved qs too?
-    //quiz.savedQuestions--;
-    quiz.setamountOfQuestions(amountOfQuestions);
-    var id = formElement.id;
-    quiz.deleteQuestion(id);
-}*/
-
-//NEW
-function deleteQuestion(formElement){
-    if(formElement.value =="saved"){
-        quiz.savedQuestions--;
-    }
-    quiz.amountOfQuestions--;
-    quiz.deleteQuestion(formElement.id)
 }
 
 /* Saves all of the quiz questions*/
@@ -209,9 +153,6 @@ function parseAnswers(pickedAnswers, counter){
 function createNewUser(){
     var email = document.getElementById("usernameInput").value;
     var password = document.getElementById("passwordInput").value;
-    console.log("Creating a new user...")
-    console.log("the email is" + email)
-    console.log("The password is" + password)
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
         console.log("in this function?");
@@ -228,28 +169,17 @@ function createNewUser(){
       });
 }
 
-/* Logs in a user*/
-
+/* Logs in a user and updates model and view*/
 function login(){
     var email = document.getElementById("usernameInput").value;
     var password = document.getElementById("passwordInput").value;
-    console.log("the email is" + email)
-    console.log("The password is" + password)
-    var error = true;
-
-    //  window.location.replace("options.html");
+     var error = true;
 
     firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
-        // Handle Errors here.
-       
-       // if(errorMessage == ""){
-       // }
-      //document.getElementById('errorDiv').innerHTML = errorMessage;
       window.location.replace('options.html')
       }).catch(function(error){
         var errorCode = error.code;
         var errorMessage = error.message;
-        
         document.getElementById('errorDiv').innerHTML = errorMessage;  
     });
 }
@@ -259,26 +189,13 @@ function redirectAdmin(){
     window.location.replace("admin.html");
 }
 
-//TO DO
-// ALL OF THE SHIT BELOW NEEDS TO BE MVC'D UP DAWG
 
-  
-
-/* updates user info*/
+/* Updates user info*/
 function getQuizzes(uid){
-    console.log("getting quizzes")
-    //console.log("emauk is " + email)
-    console.log('uid is ' + uid);
-    //user.uid 
     var ref = firebase.database().ref(uid);
-    console.log(uid);
     ref.once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
-          console.log('the key is '+ childSnapshot.key);
-          //console.log('the question is' + ref.child('questions').);
-         // var thisQ = new Quiz();
-        // console.log("this titel is" + thisQ.quizTitle)
-          var thisQ = childSnapshot.val();
+           var thisQ = childSnapshot.val();
           var key = childSnapshot.key;
           populateUserQuizzesView(thisQ, key);
          
@@ -287,7 +204,6 @@ function getQuizzes(uid){
 }
 
 /* populate view with guesses*/
-
 function populateUserQuizzesView(thisQ, key){
     
     var uq = document.getElementById('yourQuizzes');
@@ -330,9 +246,7 @@ function loadQuiz(id){
     var questions;
     var ref = firebase.database().ref(id);
     ref.once('value', function(snapshot) {
-       //console.log(snapshot.val())
-       quiz = snapshot.val();
-        console.log(quiz.questions);
+        quiz = snapshot.val();
         localStorage.setItem("quizTitle", quiz.quizTitle);
         localStorage.setItem("amountOfQuestions", quiz.amountOfQuestions);
         localStorage.setItem("allQuestions", JSON.stringify(quiz.questions));
@@ -340,84 +254,8 @@ function loadQuiz(id){
         loadUserQuiz();
     });
     
-    /*
-    localStorage.setItem("amountOfQuestions", amountOfQuestions);
-    localStorage.setItem("allQuestions", JSON.stringify(questions);
-    localStorage.setItem("amt", quiz.getamountOfQuestions());
-    loadUserQuiz();
-    */
 }
 
-
-/* Checks if a user is in, modifies accordingly*/
-/*
-function loadOptions(dummy){
-   firebase.auth().onAuthStateChanged(function(user){
-        if(user){
-            //do nothing
-            var wt = document.getElementById('titleText');
-            wt.innerHTML = "Welcome " + user.email
-        } else {
-            var od = document.getElementById('optionsDiv');
-            od.innerHTML = "";
-            var wt = document.getElementById('titleText');
-            wt.innerHTML = "Welcome Guest! Login To Access Quizzes";
-            var lb = document.createElement('button');
-            lb.setAttribute('class', "btn btn-success");
-            lb.innerHTML = "Login"
-            lb.setAttribute('onclick', 'redirectToIndex()')
-            od.appendChild(lb)
-        }
-    });
-}
-*/
-
-/* Checks if a user is in, modifies accordingly*/
- function checkLogin(dummy){
-    firebase.auth().onAuthStateChanged(function(user){
-        if(user){
-                console.log("the user is logged in at " + user.email)
-                console.log ("uid is" + user.uid)
-                getQuizzes(user.uid)
-            
-             //  var wt = document.getElementById('titleText');
-               //wt.innerHTML = "Welcome " + user.email
-
-        } else {
-            var od = document.getElementById('loggedInDiv');
-            od.innerHTML = "";
-            if(document.getElementById('btnAdd')){
-                document.getElementById('btnAdd').remove();
-                document.getElementById('btnSave').remove();  
-            } 
-            
-            saved = true; 
-            var wt = document.getElementById('titleText');
-            wt.innerHTML = "Welcome Guest! Please Login!!";
-            var lb = document.createElement('button');
-            lb.setAttribute('class', "btn btn-success");
-            lb.innerHTML = "Login"
-            lb.setAttribute('onclick', 'redirectToIndex()')
-            od.appendChild(lb)
-        }
-    });
- }
-
- /* Display Logout if Necessary*/
- function displayLogout(dummy){
-    firebase.auth().onAuthStateChanged(function(user){
-        if(user){
-            document.getElementById('loggedInDiv').innerHTML = ""
-            var btn = document.createElement('button')
-            btn.setAttribute('onclick', 'logoutUser()')
-            btn.setAttribute('class', 'btn btn-danger')
-            btn.innerHTML = "Logout"
-            document.getElementById('loggedInDiv').appendChild(btn)
-        } else {
-            
-        }
-    });
- }
 
  /* Logs out a user */
  function logoutUser(){
@@ -426,19 +264,44 @@ function loadOptions(dummy){
 
  }
 
+ /*Deletes a whole quiz on click */
  function deleteQuiz(id){
     var ref = firebase.database().ref(id).remove();
     window.location.reload();
  }
 
- /*
-function redirectToQuiz(id){
-    console.log('id is ' + id)
-    window.location = "user.php?quizID=" + id;
+  /* Checks if a user is logged in, modifies view accordingly*/
+function checkLogin(dummy){
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            getQuizzes(user.uid)
+
+        } else {
+            checkLoginView()
+        }
+    });
+ }
+
+ /* Display Logout if Necessary*/
+function displayLogout(dummy){
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            updateLogoutView()
+        } else {
+            
+        }
+    });
+ }
+
+  /* Updates the logged out view*/
+function updateLogoutView(){
+    document.getElementById('loggedInDiv').innerHTML = ""
+    var btn = document.createElement('button')
+    btn.setAttribute('onclick', 'logoutUser()')
+    btn.setAttribute('class', 'btn btn-danger')
+    btn.innerHTML = "Logout"
+    document.getElementById('loggedInDiv').appendChild(btn)
 }
- */
-
-
 
 
 

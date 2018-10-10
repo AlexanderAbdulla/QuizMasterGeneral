@@ -374,3 +374,27 @@ function checkQuizzes(){
     window.location.replace('options.html');
 }
 
+
+
+
+
+
+/* Updates the views accordingly if the user is logged in*/
+ function checkLoginView(){
+    var od = document.getElementById('loggedInDiv');
+    od.innerHTML = "";
+    if(document.getElementById('btnAdd')){
+        document.getElementById('btnAdd').remove();
+        document.getElementById('btnSave').remove();  
+    } 
+    
+    saved = true; 
+    var wt = document.getElementById('titleText');
+    wt.innerHTML = "Welcome Guest! Please Login!!";
+    var lb = document.createElement('button');
+    lb.setAttribute('class', "btn btn-success");
+    lb.innerHTML = "Login"
+    lb.setAttribute('onclick', 'redirectToIndex()')
+    od.appendChild(lb)
+ }
+
