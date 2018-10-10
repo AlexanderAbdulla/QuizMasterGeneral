@@ -162,7 +162,7 @@ function createNewUser(){
         if(errorCode == "auth/invalid-email"){
             document.getElementById("errorDiv").innerHTML = "Your email address is invalid bro"; 
         } else{
-           // window.location.replace("options.html");
+            window.location.replace("options.html");
         }
 
         console.log(errorMessage)

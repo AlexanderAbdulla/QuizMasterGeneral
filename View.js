@@ -74,16 +74,11 @@ function addHeadersToQV(form, amountOfQuestions){
 
     var br = document.createElement("br");
     form.appendChild(br);
-
-    /*
-    <label>Easy</label>
-                        <input id="Question1Easy" type = "radio" name = "Question1Difficulty" checked="checked" value="easy">
-                        <label>Hard</label>
-                        <input id="Question1Hard" type = "radio" name = "Question1Difficulty" value="hard">
-    */
+    
 
     var lbl = document.createElement('label')
     lbl.innerHTML = 'Easy'
+    lbl.style.marginRight = '1vh'
     form.appendChild(lbl)
 
     var inp = document.createElement('input')
@@ -92,11 +87,15 @@ function addHeadersToQV(form, amountOfQuestions){
     inp.id = "Question"+id+"Easy"
     inp.value = "easy"
     inp.setAttribute('checked', 'checked')
+    inp.style.marginRight = '1vh'
     form.appendChild(inp)
 
     var lbl = document.createElement('label')
     lbl.innerHTML = 'Hard'
+    lbl.style.marginRight = '1vh'
     form.appendChild(lbl)
+
+    
 
     var inp = document.createElement('input')
     inp.setAttribute('type','radio')
@@ -104,8 +103,11 @@ function addHeadersToQV(form, amountOfQuestions){
     inp.id = "Question"+id+"Hard"
     inp.value = "easy"
     inp.setAttribute('checked', 'checked')
+    inp.style.marginRight = '1vh'
     form.appendChild(inp)
     
+    addBr(form)
+
     var textarea = document.createElement("textarea");
     textarea.setAttribute('value', 'Your question goes here');
     textarea.id = "Question"+amountOfQuestions+"Text";
