@@ -293,15 +293,7 @@ function displayLogout(dummy){
     });
  }
 
-  /* Updates the logged out view*/
-function updateLogoutView(){
-    document.getElementById('loggedInDiv').innerHTML = ""
-    var btn = document.createElement('button')
-    btn.setAttribute('onclick', 'logoutUser()')
-    btn.setAttribute('class', 'btn btn-danger')
-    btn.innerHTML = "Logout"
-    document.getElementById('loggedInDiv').appendChild(btn)
-}
+
 
 
 

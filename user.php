@@ -35,7 +35,7 @@
     <div class="row">
             <div class="col-sm-4"></div>
             <div class="col-sm-4">
-                    <h1 id = "quizTitle" style="text-align: center">!!!Quiz!!!</h1>
+                    <h1 id = "quizTitle" style="text-align: center">There is no quiz loaded!</h1>
                     <div id="userQuiz">
                         <form id="userForm">
         

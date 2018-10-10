@@ -376,11 +376,18 @@ function checkQuizzes(){
 
 
 
-
-
+  /* Updates the logged out view*/
+  function updateLogoutView(){
+    document.getElementById('loggedInDiv').innerHTML = ""
+    var btn = document.createElement('button')
+    btn.setAttribute('onclick', 'logoutUser()')
+    btn.setAttribute('class', 'btn btn-danger')
+    btn.innerHTML = "Logout"
+    document.getElementById('loggedInDiv').appendChild(btn)
+}
 
 /* Updates the views accordingly if the user is logged in*/
- function checkLoginView(){
+function checkLoginView(){
     var od = document.getElementById('loggedInDiv');
     od.innerHTML = "";
     if(document.getElementById('btnAdd')){
@@ -397,4 +404,7 @@ function checkQuizzes(){
     lb.setAttribute('onclick', 'redirectToIndex()')
     od.appendChild(lb)
  }
+
+
+
 
