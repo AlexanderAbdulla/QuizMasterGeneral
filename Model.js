@@ -9,11 +9,49 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // set UID
       uid = user.uid;
+      user = new User();
     } else {
      // do nothing
     }
 });
 
+/*Defines a user class which holds data specific to the current user*/
+class User {
+
+
+    constructor(){
+  
+        var ref = firebase.database().ref(uid+ "/totalCorrectAnswers");
+        ref.once('value', function(snapshot) {
+            console.log("the values: " + snapshot.val())
+        });
+
+        var ref = firebase.database().ref(uid+ "/totalWrongAnswers");
+        ref.once('value', function(snapshot) {
+            console.log("the values: " + snapshot.val())
+        });
+
+        var ref = firebase.database().ref(uid+ "/quizzesTaken");
+        ref.once('value', function(snapshot) {
+            console.log("the values: " + snapshot.val())
+        });
+
+        
+    }
+
+    storeAnwsers(score, totalAnswers){
+        this.totalCorrectAnswers +=  score;
+        this.totalWrongAnswers += (totalAnswers - score);
+        this.quizzesTaken++;
+        console.log("the total correct answers is " + this.totalCorrectAnswers)
+        console.log("this total wrong nswers is " + this.totalWrongAnswers)
+        console.log("this total answers is " +  this.totalAnswers)
+        console.log("total quizzes written " + this.quizzesTaken)
+        database.ref(uid + "/" + "totalCorrectAnswers").set(this.totalCorrectAnswers)
+        database.ref(uid + "/" + "totalWrongAnswers").set(this.totalWrongAnswers)
+        database.ref(uid + "/" + "quizzesTaken").set(this.quizzesTaken)
+    }
+}
 
 
 /*Defines quiz class which holds all the data of the quiz */

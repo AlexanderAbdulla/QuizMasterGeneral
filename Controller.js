@@ -1,5 +1,6 @@
 //Getting a quiz object
 var quiz = new Quiz();
+var user;
 
 /* Adds a question to the model's list of questions */
 function addQuestion(){
@@ -145,7 +146,7 @@ function parseAnswers(pickedAnswers, counter){
             score--;
         }
     }
-
+    thisUser.storeAnwsers(score, totalAnswers);
     quiz.storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
 }
 
@@ -286,7 +287,7 @@ function checkLogin(dummy){
 function displayLogout(dummy){
     firebase.auth().onAuthStateChanged(function(user){
         if(user){
-            updateLogoutView()
+            updateLogoutView(user.email)
         } else {
             
         }

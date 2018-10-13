@@ -389,8 +389,13 @@ function checkQuizzes(){
 
 
   /* Updates the logged out view*/
-  function updateLogoutView(){
+  function updateLogoutView(email){
     document.getElementById('loggedInDiv').innerHTML = ""
+    
+    var welcomeMsg = document.createElement('p')  
+    welcomeMsg.innerHTML = "Welcome: " + email
+    document.getElementById('loggedInDiv').appendChild(welcomeMsg)
+
     var btn = document.createElement('button')
     btn.setAttribute('onclick', 'logoutUser()')
     btn.setAttribute('class', 'btn btn-danger')
