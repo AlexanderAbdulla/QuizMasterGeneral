@@ -20,6 +20,8 @@ class User {
 
 
     constructor(){
+
+        console.log("creating a user")
   
         var ref = firebase.database().ref(uid+ "/totalCorrectAnswers");
         ref.once('value', function(snapshot) {
@@ -39,24 +41,75 @@ class User {
         
     }
 
-    storeAnwsers(score, totalAnswers){
-        this.totalCorrectAnswers +=  score;
-        this.totalWrongAnswers += (totalAnswers - score);
-        this.quizzesTaken++;
-        console.log("the total correct answers is " + this.totalCorrectAnswers)
-        console.log("this total wrong nswers is " + this.totalWrongAnswers)
-        console.log("this total answers is " +  this.totalAnswers)
-        console.log("total quizzes written " + this.quizzesTaken)
-        database.ref(uid + "/" + "totalCorrectAnswers").set(this.totalCorrectAnswers)
-        database.ref(uid + "/" + "totalWrongAnswers").set(this.totalWrongAnswers)
-        database.ref(uid + "/" + "quizzesTaken").set(this.quizzesTaken)
+    incrementQuizzesTaken(value){
+        console.log("in inc quizzes")
+        firebase.database().ref(uid+"DATA").set({quizzesTaken: value})  
     }
+
+    storeAnwsers(score, totalAnswers){
+
+        /*
+        var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
+        starCountRef.on('value', function(snapshot) {
+        updateStarCount(postElement, snapshot.val());
+        });
+        */
+
+       var totalCorrectAnswers =  score;
+       var totalWrongAnswers = (totalAnswers - score);
+       
+
+        firebase.database().ref(uid+"DATA/quizzesTaken").once('value', function(snapshot)
+        {
+            console.log("checking quizzes taken")
+            //console.log(snapshot.val())
+            if(snapshot.exists()) {
+                var newValue = snapshot.val() + 1;
+                firebase.database().ref(uid+"DATA").update({quizzesTaken: newValue})     
+            } else {
+                firebase.database().ref(uid+"DATA").update({quizzesTaken: 1})
+                
+            }
+        })
+
+        
+        firebase.database().ref(uid+"DATA/totalCorrectAnswers").once('value', function(snapshot)
+        {
+            console.log("checking quizzes taken")
+            //console.log(snapshot.val())
+            if(snapshot.exists()) {
+                var newValue = snapshot.val() + totalCorrectAnswers;
+                firebase.database().ref(uid+"DATA").update({totalCorrectAnswers: newValue})     
+            } else {
+                firebase.database().ref(uid+"DATA").update({totalCorrectAnswers: totalCorrectAnswers})
+                
+            }
+        })
+
+        
+        firebase.database().ref(uid+"DATA/totalWrongAnswers").once('value', function(snapshot)
+        {
+            console.log("checking quizzes taken")
+            //console.log(snapshot.val())
+            if(snapshot.exists()) {
+                var newValue = snapshot.val() + totalWrongAnswers;
+                firebase.database().ref(uid+"DATA").update({totalWrongAnswers: newValue})     
+            } else {
+                firebase.database().ref(uid+"DATA").update({totalWrongAnswers: totalWrongAnswers})
+                
+            }
+        })
+        
+    }
+
+    
 }
 
 
 /*Defines quiz class which holds all the data of the quiz */
 class Quiz{
     constructor(){
+        console.log("creating a quiz")
         this.amountOfQuestions = 1;
         this.savedQuestions = 0;
         this.questions = new Array();
@@ -196,3 +249,6 @@ class Question{
         return this.questionText;
     }
 }
+
+
+function test() { console.log('in test')}

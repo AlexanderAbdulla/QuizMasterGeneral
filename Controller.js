@@ -1,6 +1,6 @@
 //Getting a quiz object
 var quiz = new Quiz();
-var user;
+var thisUser = new User();
 
 /* Adds a question to the model's list of questions */
 function addQuestion(){
@@ -146,6 +146,7 @@ function parseAnswers(pickedAnswers, counter){
             score--;
         }
     }
+    //thisUser.storeAnwsers(score, totalAnswers);
     thisUser.storeAnwsers(score, totalAnswers);
     quiz.storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
 }
