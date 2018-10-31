@@ -1,19 +1,19 @@
-<html>
+<!DOCTYPE html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">    
     <script src="https://www.gstatic.com/firebasejs/5.5.3/firebase.js"></script>
     <script src="secretScripts.js"></script>
-    <script src = "View.js" defer></script>
-    <script src = "Model.js" defer></script>
-    <script src = "Controller.js" defer></script>
     <script>
         firebaseInit();
     </script>
-    <meta name="viewport" content="width=device-width, user-scalable=false;">
+    <script src = "View.js" defer></script>
+    <script src = "Model.js" defer></script>
+    <script src = "Controller.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body onload="checkLogin(1)">
+<body onload="checkLogin(3)">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <a class="navbar-brand" href="index.html">QuizMasterGeneral</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                   <ul class="navbar-nav">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                       <a class="nav-link" href="options.html">Your Quizzes<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
@@ -32,26 +32,22 @@
                     </li>
                   </ul>
                 </div>
-              </nav>
-     <div class="row">
+            </nav>
+    <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4" style="text-align: center" id = "centerDiv">
-            <h1 id="titleText">Make / Take a Quiz</h1>
-            <br>
-            <div id ="loggedInDiv" >
-            <button class="btn btn-success" onclick="redirectAdmin()">Create New Quiz</button>
-            <br>
-            <br>
-            <h3>Your Quizzes</h3>
-            <br>
-            <div id="yourQuizzes"></div>
-            <br>
-            <div id="emptyTxt" style="font-style: italic"></div>
-            <br>
+            <h1 id="titleText"></h1>
+            <div id="loggedInDiv">
             </div>
+            <div id="statsDiv">
+                <p id="quizzesTaken"></p>
+                <p id="totalCorrectAnswers"></p>
+                <p id="totalWrongAnswers"></p>
+                <p id="averageScore"></p>
+                <p id="rank"></p>
+            </div>    
         </div>
         <div class="col-sm-4"></div>
     </div>
-
 </body>
 </html>

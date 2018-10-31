@@ -197,12 +197,59 @@ function getQuizzes(uid){
     var ref = firebase.database().ref(uid);
     ref.once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
-           var thisQ = childSnapshot.val();
-          var key = childSnapshot.key;
-          populateUserQuizzesView(thisQ, key);
-         
+            var thisQ = childSnapshot.val();
+            var key = childSnapshot.key;
+            populateUserQuizzesView(thisQ, key);
         });
     });
+}
+
+/* Updates user ranking */
+function getRanking(uid){
+    var ref = firebase.database().ref(uid+"DATA")
+    var counter = 0;
+    var quizzesTaken;
+    var totalCorrectAnswers;
+    var totalWrongAnswers;
+
+    ref.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            console.log("values " + childSnapshot.val())
+            if(counter == 0) {
+                quizzesTaken = childSnapshot.val();
+            } else if(counter == 1){
+                totalCorrectAnswers = childSnapshot.val();
+            } else {
+                totalWrongAnswers = childSnapshot.val();
+            }
+            counter++;
+        });
+        populateRanking(quizzesTaken, totalCorrectAnswers, totalWrongAnswers);
+    });
+
+}
+
+/*
+<p id="quizzesTaken"></p>
+                    <p id="averageScore"></p>
+                    <p id="rank"></p>
+*/
+
+/* populateRanking */
+function populateRanking(quizzesTaken, totalCorrectAnswers, totalWrongAnswers){
+    console.log("total correct " + totalCorrectAnswers);
+    console.log("total wrong " + totalWrongAnswers);
+    var avgScore = totalCorrectAnswers/totalWrongAnswers;
+    if(avgScore > 0) {
+        avgScore = 100;
+    } else {
+        avgScore = avgScore * 100;
+    }
+    document.getElementById('quizzesTaken').innerHTML = "Quizzes Taken: " + quizzesTaken;
+    document.getElementById('totalCorrectAnswers').innerHTML = "Total Answers Correct: " + totalCorrectAnswers;
+    document.getElementById('totalWrongAnswers').innerHTML = "Total Answers Wrong: " + totalWrongAnswers;
+    document.getElementById('averageScore').innerHTML = "Average Score: " + avgScore + "%";
+
 }
 
 /* populate view with guesses*/
@@ -276,8 +323,12 @@ function loadQuiz(id){
 function checkLogin(dummy){
     firebase.auth().onAuthStateChanged(function(user){
         if(user){
-            getQuizzes(user.uid)
-
+            if(dummy == 3)
+            {
+                getRanking(user.uid)
+            } else{
+                getQuizzes(user.uid)
+            }
         } else {
             checkLoginView()
         }

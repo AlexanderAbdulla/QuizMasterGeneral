@@ -41,20 +41,11 @@ class User {
         
     }
 
-    incrementQuizzesTaken(value){
-        console.log("in inc quizzes")
-        firebase.database().ref(uid+"DATA").set({quizzesTaken: value})  
-    }
+    
 
     storeAnwsers(score, totalAnswers){
 
-        /*
-        var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
-        starCountRef.on('value', function(snapshot) {
-        updateStarCount(postElement, snapshot.val());
-        });
-        */
-
+        
        var totalCorrectAnswers =  score;
        var totalWrongAnswers = (totalAnswers - score);
        
