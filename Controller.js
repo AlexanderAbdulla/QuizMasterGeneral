@@ -285,7 +285,7 @@ function populateRanking(quizzesTaken, totalCorrectAnswers, totalWrongAnswers){
 
 }
 
-/* populate view with guesses*/
+/* populate view with quizzes*/
 function populateUserQuizzesView(thisQ, key){
     
     var uq = document.getElementById('yourQuizzes');
@@ -295,6 +295,7 @@ function populateUserQuizzesView(thisQ, key){
     quizTitle.setAttribute('class', 'btn btn-primary')
     quizTitle.innerHTML =  thisQ.quizTitle;
     uq.appendChild(quizTitle);
+    uq.appendChild(document.createElement('br'))
 
     var quizDelete = document.createElement('button');
     quizDelete.id = uid + "/" + key;
@@ -304,6 +305,34 @@ function populateUserQuizzesView(thisQ, key){
     console.log('quiz delete butting about to be added')
     console.log(quizDelete);
     uq.appendChild(quizDelete);
+
+    var quizShare = document.createElement('button')
+    quizShare.id = uid + "/" + key;
+    //quizShare.setAttribute('onclick', 'shareQuiz(this.id)')
+    quizShare.setAttribute('class', 'btn btn-warning')
+    quizShare.onclick = function(){
+        modal.style.display="block"
+    }
+    //quizShare.style.backgroundImage = "url('/sharebtn.png')" 
+    quizShare.innerHTML = "Share"
+    console.log('quiz share butting about to be added')
+    console.log(quizShare);
+    
+    var modal = document.getElementById('myModal')
+    var span = document.getElementsByClassName("close")[0]
+    
+    document.getElementById('modalText').value = "https://quizmastergeneral.azurewebsites.net/user.php?quizID=" + uid+"/"+key
+
+    span.onclick = function(){
+        modal.style.display="none";
+    }
+    window.onclick =function(event){
+        if (event.target == modal){
+            modal.style.display="none"
+        }
+    }   
+
+    uq.appendChild(quizShare);
 
     uq.appendChild(document.createElement('br'))
     uq.appendChild(document.createElement('br'))

@@ -28,7 +28,12 @@
                     <li class="nav-item">
                       <a class="nav-link" href="admin.html">Make Quiz</a>
                     </li>
-                    
+                    <li class="nav-item">
+                      <a class="nav-link" href="stats.html">Your Stats</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="leaderboard.html">Leaderboard</a>
+                    </li>
                   </ul>
                 </div>
         </nav>  
