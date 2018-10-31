@@ -2,6 +2,8 @@
 var database =  firebase.database();
 //The user ID
 var uid;
+//The username
+var username;
 
 /* set auth data on login */
 firebase.auth().onAuthStateChanged(function(user) {
@@ -9,6 +11,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // set UID
       uid = user.uid;
+      username = user.email;
       user = new User();
     } else {
      // do nothing
@@ -48,47 +51,62 @@ class User {
         
        var totalCorrectAnswers =  score;
        var totalWrongAnswers = (totalAnswers - score);
+       var baseValue = -1; 
        
+        
 
-        firebase.database().ref(uid+"DATA/quizzesTaken").once('value', function(snapshot)
+        firebase.database().ref("userStats/"+uid).once('value', function(snapshot)
+        {
+            console.log("user stats taken")
+            //console.log(snapshot.val())
+            if(snapshot.exists()) {
+                console.log("we are in the if")
+                var newValue = Math.abs(snapshot.child('quizzesTaken').val()) + 1;
+                console.log(" the new value is" + newValue)
+                newValue = -Math.abs(newValue);
+                firebase.database().ref("userStats/"+uid).update({quizzesTaken: newValue})     
+            } else {
+                console.log("we are in the else ")
+                firebase.database().ref("userStats/"+uid).update({quizzesTaken: baseValue})
+
+            }
+        })
+
+        
+        firebase.database().ref("userStats/"+uid).once('value', function(snapshot)
         {
             console.log("checking quizzes taken")
             //console.log(snapshot.val())
             if(snapshot.exists()) {
-                var newValue = snapshot.val() + 1;
-                firebase.database().ref(uid+"DATA").update({quizzesTaken: newValue})     
+                var newValue = Math.abs(snapshot.child('totalCorrectAnswers').val()) + totalCorrectAnswers;
+                newValue = -Math.abs(newValue)
+                firebase.database().ref("userStats/"+uid).update({totalCorrectAnswers: newValue})     
             } else {
-                firebase.database().ref(uid+"DATA").update({quizzesTaken: 1})
+                totalCorrectAnswers = -Math.abs(totalCorrectAnswers)
+                firebase.database().ref("userStats/"+uid).update({totalCorrectAnswers: totalCorrectAnswers})
                 
             }
         })
 
         
-        firebase.database().ref(uid+"DATA/totalCorrectAnswers").once('value', function(snapshot)
+        firebase.database().ref("userStats/"+uid).once('value', function(snapshot)
         {
             console.log("checking quizzes taken")
             //console.log(snapshot.val())
             if(snapshot.exists()) {
-                var newValue = snapshot.val() + totalCorrectAnswers;
-                firebase.database().ref(uid+"DATA").update({totalCorrectAnswers: newValue})     
+                var newValue = Math.abs(snapshot.child('totalWrongAnswers').val()) + totalWrongAnswers;
+                newValue = -Math.abs(newValue);
+                firebase.database().ref("userStats/"+uid).update({totalWrongAnswers: newValue})     
             } else {
-                firebase.database().ref(uid+"DATA").update({totalCorrectAnswers: totalCorrectAnswers})
+                totalWrongAnswers = -Math.abs(totalWrongAnswers)
+                firebase.database().ref("userStats/"+uid).update({totalWrongAnswers: totalWrongAnswers})
                 
             }
         })
 
-        
-        firebase.database().ref(uid+"DATA/totalWrongAnswers").once('value', function(snapshot)
+        firebase.database().ref("userStats/"+uid).once('value', function(snapshot)
         {
-            console.log("checking quizzes taken")
-            //console.log(snapshot.val())
-            if(snapshot.exists()) {
-                var newValue = snapshot.val() + totalWrongAnswers;
-                firebase.database().ref(uid+"DATA").update({totalWrongAnswers: newValue})     
-            } else {
-                firebase.database().ref(uid+"DATA").update({totalWrongAnswers: totalWrongAnswers})
-                
-            }
+            firebase.database().ref("userStats/"+uid).update({username: username})
         })
         
     }

@@ -13,7 +13,7 @@
     <script src = "Controller.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body onload="checkLogin(3)">
+<body onload="checkLogin(4)">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <a class="navbar-brand" href="index.html">QuizMasterGeneral</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,22 +33,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="leaderboard.html">Leaderboard</a>
                     </li>
+                    
                   </ul>
                 </div>
             </nav>
     <div class="row">
         <div class="col-sm-4"></div>
         <div class="col-sm-4" style="text-align: center" id = "centerDiv">
-            <h1 id="titleText">Your Stats</h1>
+            <h1 id="titleText">Leaderboard</h1>
             <div id="loggedInDiv">
+                    <br>
+                    <h2>Top Quiz Takers</h2>
+                    <div id="topQuizTakers"></div>
+                    <br>
+                    <h2>Top Scorers</h2>
+                    <div id="topScorers"></div>
             </div>
-            <div id="statsDiv">
-                <p id="quizzesTaken"></p>
-                <p id="totalCorrectAnswers"></p>
-                <p id="totalWrongAnswers"></p>
-                <p id="averageScore"></p>
-                <p id="rank"></p>
-            </div>    
+               
         </div>
         <div class="col-sm-4"></div>
     </div>

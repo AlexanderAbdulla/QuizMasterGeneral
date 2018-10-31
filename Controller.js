@@ -147,7 +147,14 @@ function parseAnswers(pickedAnswers, counter){
         }
     }
     //thisUser.storeAnwsers(score, totalAnswers);
-    thisUser.storeAnwsers(score, totalAnswers);
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+            thisUser.storeAnwsers(score, totalAnswers);
+        } 
+    });
+   // if(user){
+      //  thisUser.storeAnwsers(score, totalAnswers);
+    //}
     quiz.storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
 }
 
@@ -204,9 +211,40 @@ function getQuizzes(uid){
     });
 }
 
+/* Updates leaderboard */
+/*
+  <h2>Top Quiz Takers</h2>
+                    <div id="topQuizTakers"></div>
+                    <br>
+                    <h2>Top Scorers</h2>
+                    <div id="topScorers"></div>
+*/
+
+function getLeaderboard(uid){
+    var ref = firebase.database().ref('userStats').orderByChild('quizzesTaken').limitToLast(5);
+    ref.on("value", function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+            console.log("value " + childSnapshot.key)
+            var x = document.createElement('p')
+            x.innerHTML = "USER: " + childSnapshot.child('username').val() + " QUIZZES TAKEN: " + Math.abs(childSnapshot.child('quizzesTaken').val());
+            document.getElementById('topQuizTakers').appendChild(x)
+        })
+    })
+
+    var ref = firebase.database().ref('userStats').orderByChild('totalCorrectAnswers').limitToLast(5);
+    ref.on("value", function(snapshot){
+        snapshot.forEach(function(childSnapshot){
+            console.log("value " + childSnapshot.key)
+            var x = document.createElement('p')
+            x.innerHTML = "USER: " + childSnapshot.child('username').val() + " CORRECT ANSWERS: " + Math.abs(childSnapshot.child('totalCorrectAnswers').val());
+            document.getElementById('topScorers').appendChild(x)
+        })
+    })
+}
+
 /* Updates user ranking */
 function getRanking(uid){
-    var ref = firebase.database().ref(uid+"DATA")
+    var ref = firebase.database().ref("userStats/"+uid)
     var counter = 0;
     var quizzesTaken;
     var totalCorrectAnswers;
@@ -219,12 +257,12 @@ function getRanking(uid){
                 quizzesTaken = childSnapshot.val();
             } else if(counter == 1){
                 totalCorrectAnswers = childSnapshot.val();
-            } else {
+            } else if(counter == 2) {
                 totalWrongAnswers = childSnapshot.val();
             }
             counter++;
         });
-        populateRanking(quizzesTaken, totalCorrectAnswers, totalWrongAnswers);
+        populateRanking(Math.abs(quizzesTaken), Math.abs(totalCorrectAnswers), Math.abs(totalWrongAnswers));
     });
 
 }
@@ -239,12 +277,7 @@ function getRanking(uid){
 function populateRanking(quizzesTaken, totalCorrectAnswers, totalWrongAnswers){
     console.log("total correct " + totalCorrectAnswers);
     console.log("total wrong " + totalWrongAnswers);
-    var avgScore = totalCorrectAnswers/totalWrongAnswers;
-    if(avgScore > 0) {
-        avgScore = 100;
-    } else {
-        avgScore = avgScore * 100;
-    }
+    var avgScore = ((totalCorrectAnswers/(totalCorrectAnswers + totalWrongAnswers))*100).toFixed(2);
     document.getElementById('quizzesTaken').innerHTML = "Quizzes Taken: " + quizzesTaken;
     document.getElementById('totalCorrectAnswers').innerHTML = "Total Answers Correct: " + totalCorrectAnswers;
     document.getElementById('totalWrongAnswers').innerHTML = "Total Answers Wrong: " + totalWrongAnswers;
@@ -326,7 +359,9 @@ function checkLogin(dummy){
             if(dummy == 3)
             {
                 getRanking(user.uid)
-            } else{
+            } else if(dummy == 4){
+                getLeaderboard(user.uid)
+            } else {
                 getQuizzes(user.uid)
             }
         } else {
