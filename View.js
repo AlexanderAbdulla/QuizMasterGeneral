@@ -19,7 +19,7 @@ function addBtnsToQv(form, amountOfQuestions){
     var btn = document.createElement("INPUT");
     btn.setAttribute('type', 'button');
     btn.setAttribute('class', 'btn btn-success')
-    btn.setAttribute('onclick', 'saveQuestion(this.form)');
+    btn.setAttribute('onclick', 'saveQuestion(this.form, this)');
     btn.setAttribute('value', 'Save')
     btn.style.marginRight = "5px";
     form.appendChild(btn);
