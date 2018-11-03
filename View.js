@@ -126,7 +126,7 @@ function deleteQuestionView(id){
     console.log("deleting" + id);
     var deletedEl = document.getElementById(id);
     deletedEl.parentNode.removeChild(deletedEl);
-    //bug
+    
     var counter = 1;
 
      $('#quizDiv').children('form').each(function () {

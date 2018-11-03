@@ -45,7 +45,7 @@ class User {
     }
 
     
-
+    /* Stores the answers in the user's node in firebase */
     storeAnwsers(score, totalAnswers){
 
         
@@ -57,16 +57,11 @@ class User {
 
         firebase.database().ref("userStats/"+uid).once('value', function(snapshot)
         {
-            console.log("user stats taken")
-            //console.log(snapshot.val())
-            if(snapshot.exists()) {
-                console.log("we are in the if")
+             if(snapshot.exists()) {
                 var newValue = Math.abs(snapshot.child('quizzesTaken').val()) + 1;
-                console.log(" the new value is" + newValue)
                 newValue = -Math.abs(newValue);
                 firebase.database().ref("userStats/"+uid).update({quizzesTaken: newValue})     
             } else {
-                console.log("we are in the else ")
                 firebase.database().ref("userStats/"+uid).update({quizzesTaken: baseValue})
 
             }
@@ -75,9 +70,7 @@ class User {
         
         firebase.database().ref("userStats/"+uid).once('value', function(snapshot)
         {
-            console.log("checking quizzes taken")
-            //console.log(snapshot.val())
-            if(snapshot.exists()) {
+             if(snapshot.exists()) {
                 var newValue = Math.abs(snapshot.child('totalCorrectAnswers').val()) + totalCorrectAnswers;
                 newValue = -Math.abs(newValue)
                 firebase.database().ref("userStats/"+uid).update({totalCorrectAnswers: newValue})     
@@ -91,9 +84,7 @@ class User {
         
         firebase.database().ref("userStats/"+uid).once('value', function(snapshot)
         {
-            console.log("checking quizzes taken")
-            //console.log(snapshot.val())
-            if(snapshot.exists()) {
+               if(snapshot.exists()) {
                 var newValue = Math.abs(snapshot.child('totalWrongAnswers').val()) + totalWrongAnswers;
                 newValue = -Math.abs(newValue);
                 firebase.database().ref("userStats/"+uid).update({totalWrongAnswers: newValue})     
@@ -144,20 +135,7 @@ class Quiz{
         this.amountOfQuestions = newAmt;
     }
 
-    /* Adds a question to the view */
-    /*BUG
-    addQuestion(question){
-        //TODO investigate if this is where our counting error is
-        if(this.savedQuestions < question.id) {
-            this.questions.push(question)
-            this.savedQuestions++;
-        }
-      
-       this.getQuestions();
-       clearErrorDiv();
-       addSavedQuestionView(question.getid());
-    }
-*/
+
     addQuestion(question){
         this.questions.push(question)
         this.savedQuestions++;
@@ -260,4 +238,3 @@ class Question{
 }
 
 
-function test() { console.log('in test')}
