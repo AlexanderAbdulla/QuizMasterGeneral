@@ -1,4 +1,4 @@
-/* Creates a quiz and user object */
+//Getting a quiz object
 var quiz = new Quiz();
 var thisUser = new User();
 
@@ -33,6 +33,7 @@ function saveQuestion(formElement, btnElement){
         difficulty = true; 
     }
 
+   // grabbing the values to validate them and update the model 
     var questionText = document.getElementById("Question"+id+"Text").value;
     var answer1 = document.getElementById("Question"+id+"Answer"+0).value;
     var answer2 = document.getElementById("Question"+id+"Answer"+1).value;
@@ -41,6 +42,7 @@ function saveQuestion(formElement, btnElement){
     var radios = document.getElementsByName('answers'+id);
 
     for(var i = 0; i < radios.length; i++){
+        console.log(radios[i]);
         if(radios[i].checked)
             var correctAnswer = radios[i].value;
     }
@@ -48,6 +50,7 @@ function saveQuestion(formElement, btnElement){
     var question = new Question(id, questionText, answer1, answer2, answer3, answer4, correctAnswer, difficulty);
     if(quiz.validateSave(question) == true){
         quiz.addQuestion(question);
+        console.log('BUG AREA')
         document.getElementById(btnElement.id).disabled = true;
     }
        
@@ -55,6 +58,7 @@ function saveQuestion(formElement, btnElement){
 
 /* Saves all of the quiz questions*/
 function saveAll(){
+    console.log("the uid is " + uid)
     
     if(validateSave()== true){
 
@@ -62,8 +66,11 @@ function saveAll(){
          localStorage.setItem("amountOfQuestions", quiz.getamountOfQuestions());
          localStorage.setItem("allQuestions", JSON.stringify(quiz.getQuestions()));
          localStorage.setItem("amt", quiz.getamountOfQuestions());
+         console.log("We are in here");
+         console.log("We have stored" + localStorage.getItem("allQuestions"))        
          quiz.quizTitle = document.getElementById('QuizTitle').value;
          saved = true;
+         console.log('saved' + saved)
          quiz.saveAllState();
          database.ref(uid).push(quiz);
         } else {
@@ -79,6 +86,7 @@ function saveAll(){
 
 /*Checks all of the answers and sees which ones have been selected */
 function checkAnswers(){
+    console.log("Checking answers brah");
     var counter = 0; 
    
     var pickedAnswers = new Array();
@@ -127,9 +135,12 @@ function parseAnswers(pickedAnswers, counter){
    var incorrectQuestionNumbers = new Array();
     
     for (var i = 0; i < counter; i++){
-      if(pickedAnswers[i] == JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer){
+        console.log("checking for " + JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer);
+        if(pickedAnswers[i] == JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer){
+            console.log("got a match");
         } else {
-           incorrectAnswers.push(pickedAnswers[i]);
+            console.log("no match");
+            incorrectAnswers.push(pickedAnswers[i]);
             incorrectAnswerValues.push(document.getElementById(pickedAnswers[i]).innerHTML)
             correctedAnswers.push(JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer);
             correctedAnswerValues.push(document.getElementById(JSON.parse(localStorage.getItem("allQuestions"))[i].correctAnswer).innerHTML)
@@ -137,12 +148,15 @@ function parseAnswers(pickedAnswers, counter){
             score--;
         }
     }
+    //thisUser.storeAnwsers(score, totalAnswers);
     firebase.auth().onAuthStateChanged(function(user){
         if(user){
             thisUser.storeAnwsers(score, totalAnswers);
         } 
     });
-  
+   // if(user){
+      //  thisUser.storeAnwsers(score, totalAnswers);
+    //}
     quiz.storeAnwsers(score, totalAnswers, incorrectAnswers, correctedAnswers, incorrectAnswerValues, correctedAnswerValues, incorrectQuestionNumbers);
 }
 
@@ -151,6 +165,8 @@ function createNewUser(){
     var email = document.getElementById("usernameInput").value;
     var password = document.getElementById("passwordInput").value;
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        console.log("in this function?");
         var errorCode = error.code;
         var errorMessage = error.message;
         
@@ -160,7 +176,7 @@ function createNewUser(){
             window.location.replace("options.html");
         }
 
-        
+        console.log(errorMessage)
       });
 }
 
@@ -197,8 +213,15 @@ function getQuizzes(uid){
     });
 }
 
+/* Updates leaderboard */
+/*
+  <h2>Top Quiz Takers</h2>
+                    <div id="topQuizTakers"></div>
+                    <br>
+                    <h2>Top Scorers</h2>
+                    <div id="topScorers"></div>
+*/
 
-/* Gets the leaderboard information from firebase */
 function getLeaderboard(uid){
     var ref = firebase.database().ref('userStats').orderByChild('quizzesTaken').limitToLast(5);
     ref.on("value", function(snapshot){
@@ -231,6 +254,8 @@ function getRanking(uid){
     var totalCorrectAnswers = 0;
     var totalWrongAnswers = 0;
 
+    console.log("in ranking")
+
     ref.once('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
             console.log("values " + childSnapshot.val())
@@ -239,6 +264,8 @@ function getRanking(uid){
                 if(isNaN(quizzesTaken)){
                     quizzesTaken = 0;
                 }
+
+                console.log("QUIZZES TAKEN " + quizzesTaken)
 
             } else if(counter == 1){
                 totalCorrectAnswers = childSnapshot.val();
@@ -259,7 +286,6 @@ function getRanking(uid){
     });
 
 }
-
 
 
 /* populateRanking */
@@ -294,15 +320,21 @@ function populateUserQuizzesView(thisQ, key){
     quizDelete.setAttribute('onclick', 'deleteQuiz(this.id)')
     quizDelete.setAttribute('class', 'btn btn-danger')
     quizDelete.innerHTML = "X";
+    console.log('quiz delete butting about to be added')
+    console.log(quizDelete);
     uq.appendChild(quizDelete);
 
     var quizShare = document.createElement('button')
     quizShare.id = uid + "/" + key;
+    //quizShare.setAttribute('onclick', 'shareQuiz(this.id)')
     quizShare.setAttribute('class', 'btn btn-warning')
     quizShare.onclick = function(){
         modal.style.display="block"
     }
+    //quizShare.style.backgroundImage = "url('/sharebtn.png')" 
     quizShare.innerHTML = "Share"
+    console.log('quiz share butting about to be added')
+    console.log(quizShare);
     
     var modal = document.getElementById('myModal')
     var span = document.getElementsByClassName("close")[0]
@@ -319,6 +351,7 @@ function populateUserQuizzesView(thisQ, key){
     }   
 
     uq.appendChild(quizShare);
+
     uq.appendChild(document.createElement('br'))
     uq.appendChild(document.createElement('br'))
 }
